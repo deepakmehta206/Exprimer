@@ -1,0 +1,25 @@
+@for (section of sections(); track section.id) {
+  @switch (section.type) {
+    @case ('hero') {
+      <app-hero-section [data]="asHero(section.data)" />
+    }
+    @case ('stats') {
+      <app-stats-section [data]="asStats(section.data)" />
+    }
+    @case ('services') {
+      <app-services-section [data]="asServices(section.data)" />
+    }
+    @case ('process') {
+      <app-process-section [data]="asProcess(section.data)" />
+    }
+    @case ('cta') {
+      <app-cta-section [data]="asCta(section.data)" />
+    }
+    @case ('offices') {
+      <app-offices-section [data]="asOffices(section.data)" />
+    }
+    @case ('feature-list') {
+      <app-feature-list-section [data]="asFeatures(section.data)" />
+    }
+  }
+}

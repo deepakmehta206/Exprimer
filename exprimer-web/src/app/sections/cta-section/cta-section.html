@@ -1,0 +1,56 @@
+<section class="section cta" [attr.id]="data().id || 'contact'" #root>
+  <div class="container cta__panel">
+    <div class="cta__copy">
+      <h2 class="section-title">{{ data().title }}</h2>
+      <p class="section-subtitle">{{ data().subtitle }}</p>
+      <ul>
+        @for (bullet of data().bullets; track bullet) {
+          <li>{{ bullet }}</li>
+        }
+      </ul>
+    </div>
+
+    <form class="cta__form" [formGroup]="form" (ngSubmit)="submit()">
+      @if (success()) {
+        <p class="cta__success">Thanks — we will connect within a day.</p>
+      }
+
+      <label>
+        <span>Name</span>
+        <input formControlName="name" autocomplete="name" />
+      </label>
+      <label>
+        <span>Email</span>
+        <input formControlName="email" type="email" autocomplete="email" />
+      </label>
+      <label>
+        <span>Phone</span>
+        <input formControlName="phone" autocomplete="tel" />
+      </label>
+      <label>
+        <span>Company</span>
+        <input formControlName="company" />
+      </label>
+      <label>
+        <span>Interest</span>
+        <select formControlName="interest">
+          <option>Media Distribution</option>
+          <option>Recruitment</option>
+          <option>Background Verification</option>
+        </select>
+      </label>
+      <label class="full">
+        <span>Message</span>
+        <textarea formControlName="message" rows="4"></textarea>
+      </label>
+
+      @if (error()) {
+        <p class="cta__error">{{ error() }}</p>
+      }
+
+      <button class="btn btn-primary" type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Sending…' : data().ctaLabel }}
+      </button>
+    </form>
+  </div>
+</section>

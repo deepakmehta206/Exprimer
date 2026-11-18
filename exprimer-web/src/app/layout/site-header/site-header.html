@@ -1,0 +1,20 @@
+<header class="header">
+  <div class="container header__inner">
+    <a routerLink="/home" class="brand" (click)="closeMenu()">
+      <span class="brand__text">{{ settings()?.brandName || 'Exprimer' }}</span>
+    </a>
+
+    <button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen">
+      <span class="sr-only">Menu</span>
+      <span></span><span></span>
+    </button>
+
+    <nav class="nav" [class.is-open]="menuOpen">
+      <a routerLink="/home" routerLinkActive="is-active" (click)="closeMenu()">Home</a>
+      <a routerLink="/media" routerLinkActive="is-active" (click)="closeMenu()">Media</a>
+      <a routerLink="/recruitment" routerLinkActive="is-active" (click)="closeMenu()">Talent</a>
+      <a routerLink="/verification" routerLinkActive="is-active" (click)="closeMenu()">Verify</a>
+      <a class="nav__cta" href="#contact" (click)="closeMenu()">Enquire</a>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,22 @@
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <p class="footer__brand">{{ settings()?.brandName || 'Exprimer' }}</p>
+      <p class="footer__tag">{{ settings()?.tagline }}</p>
+    </div>
+    <div>
+      <p class="footer__label">Contact</p>
+      <p>{{ settings()?.phonePrimary }}</p>
+      <p>{{ settings()?.phoneSecondary }}</p>
+      <a [href]="'mailto:' + (settings()?.email || '')">{{ settings()?.email }}</a>
+    </div>
+    <div>
+      <p class="footer__label">Quick links</p>
+      <a href="/#services">Services</a>
+      <a href="/#contact">Enquiry</a>
+    </div>
+  </div>
+  <div class="container footer__copy">
+    <p>© {{ year }} {{ settings()?.brandName || 'Exprimer' }}. All rights reserved.</p>
+  </div>
+</footer>

@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "3pAjo1MRCf4=",
+  "success": true,
+  "projectFilePath": "D:\\MyProjects\\Angular\\manish\\Exprimer.Cms.Api\\Exprimer.Cms.Api.csproj",
+  "expectedPackageFiles": [
+    "D:\\MyProjects\\Angular\\manish\\.nuget-packages\\microsoft.aspnetcore.openapi\\10.0.12\\microsoft.aspnetcore.openapi.10.0.12.nupkg.sha512",
+    "D:\\MyProjects\\Angular\\manish\\.nuget-packages\\microsoft.entityframeworkcore\\10.0.0\\microsoft.entityframeworkcore.10.0.0.nupkg.sha512",
+    "D:\\MyProjects\\Angular\\manish\\.nuget-packages\\microsoft.entityframeworkcore.abstractions\\10.0.0\\microsoft.entityframeworkcore.abstractions.10.0.0.nupkg.sha512",
+    "D:\\MyProjects\\Angular\\manish\\.nuget-packages\\microsoft.entityframeworkcore.analyzers\\10.0.0\\microsoft.entityframeworkcore.analyzers.10.0.0.nupkg.sha512",
+    "D:\\MyProjects\\Angular\\manish\\.nuget-packages\\microsoft.entityframeworkcore.inmemory\\10.0.0\\microsoft.entityframeworkcore.inmemory.10.0.0.nupkg.sha512",
+    "D:\\MyProjects\\Angular\\manish\\.nuget-packages\\microsoft.openapi\\2.12.0\\microsoft.openapi.2.12.0.nupkg.sha512"
+  ],
+  "logs": []
+}

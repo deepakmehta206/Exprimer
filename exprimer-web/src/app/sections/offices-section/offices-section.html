@@ -1,0 +1,14 @@
+<section class="section offices" #root>
+  <div class="container">
+    <h2 class="section-title">{{ data().title }}</h2>
+    <div class="offices__grid">
+      @for (office of data().items; track office.city) {
+        <article class="office">
+          <p class="office__city">{{ office.city }}</p>
+          <p class="office__country">{{ office.country }}</p>
+          <p class="office__address">{{ office.address }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>

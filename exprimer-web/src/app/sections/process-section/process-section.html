@@ -1,0 +1,17 @@
+<section class="section process" #root>
+  <div class="container">
+    <p class="eyebrow">{{ data().eyebrow }}</p>
+    <h2 class="section-title">{{ data().title }}</h2>
+    <div class="process__track">
+      <div class="process__grid">
+        @for (step of data().steps; track step.number) {
+          <article class="step">
+            <span class="step__num">{{ step.number }}</span>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.text }}</p>
+          </article>
+        }
+      </div>
+    </div>
+  </div>
+</section>

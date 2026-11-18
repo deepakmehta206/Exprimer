@@ -1,0 +1,45 @@
+<section class="hero" #root>
+  <canvas class="hero__canvas" #beamCanvas aria-hidden="true"></canvas>
+  <div class="hero__grid" aria-hidden="true"></div>
+
+  <div class="hero__media" aria-hidden="true">
+    <img class="hero__visual" [src]="data().imageUrl" [alt]="''" />
+    <div class="hero__scrim"></div>
+    <div class="hero__grain"></div>
+  </div>
+
+  <div class="container hero__content">
+    <p class="hero__eyebrow">{{ data().eyebrow }}</p>
+    <p class="hero__brand" [attr.aria-label]="data().brand">
+      @for (ch of brandChars(); track $index) {
+        <span class="hero__char">{{ ch === ' ' ? '\u00A0' : ch }}</span>
+      }
+    </p>
+    <h1 class="hero__headline">
+      @for (part of headlineParts(); track $index) {
+        @if (part.accent) {
+          <span class="t-spectrum">{{ part.text }}</span>
+        } @else {
+          <span>{{ part.text }}</span>
+        }
+      }
+    </h1>
+    <div class="hero__actions">
+      @if (isInternal(data().primaryCtaHref)) {
+        <a class="btn btn-primary" [routerLink]="data().primaryCtaHref">{{ data().primaryCta }}</a>
+      } @else {
+        <a class="btn btn-primary" [href]="data().primaryCtaHref">{{ data().primaryCta }}</a>
+      }
+      @if (isInternal(data().secondaryCtaHref)) {
+        <a class="hero__text-link" [routerLink]="data().secondaryCtaHref">{{ data().secondaryCta }}</a>
+      } @else {
+        <a class="hero__text-link" [href]="data().secondaryCtaHref">{{ data().secondaryCta }}</a>
+      }
+    </div>
+  </div>
+
+  <div class="hero__scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <i></i>
+  </div>
+</section>

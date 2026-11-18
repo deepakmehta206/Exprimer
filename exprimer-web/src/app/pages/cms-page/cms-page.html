@@ -1,0 +1,17 @@
+<app-mouse-glow />
+<app-site-header [settings]="settings()" />
+
+<main>
+  @if (loading()) {
+    <div class="state container">Loading Exprimer experience…</div>
+  } @else if (error()) {
+    <div class="state container state--error">
+      <p>{{ error() }}</p>
+      <p>Start the CMS API on <code>http://localhost:5117</code> and refresh.</p>
+    </div>
+  } @else if (page(); as current) {
+    <app-section-host [sections]="current.sections" />
+  }
+</main>
+
+<app-site-footer [settings]="settings()" />

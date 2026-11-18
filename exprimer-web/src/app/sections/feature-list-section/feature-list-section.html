@@ -1,0 +1,10 @@
+<section class="section features" #root>
+  <div class="container">
+    <h2 class="section-title">{{ data().title }}</h2>
+    <ul class="features__list">
+      @for (item of data().items; track item.text) {
+        <li class="feature">{{ item.text }}</li>
+      }
+    </ul>
+  </div>
+</section>
