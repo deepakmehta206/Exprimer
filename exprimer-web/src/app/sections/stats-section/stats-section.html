@@ -1,9 +1,49 @@
 <section class="section stats" #root>
   <div class="container stats__grid">
     @for (item of items(); track item.label) {
-      <article class="stat">
-        <p class="stat__value">{{ item.display }}</p>
-        <p class="stat__label">{{ item.label }}</p>
+      <article
+        class="stat"
+        [class.stat--map]="item.isCountries"
+        [class.is-open]="item.isCountries && mapOpen()"
+        (mouseenter)="item.isCountries && openMap()"
+        (mouseleave)="item.isCountries && scheduleClose()"
+      >
+        @if (item.isCountries) {
+          <button
+            type="button"
+            class="stat__hit"
+            (click)="toggleMap($event)"
+            [attr.aria-expanded]="mapOpen()"
+            aria-controls="countries-map"
+          >
+            <span class="stat__value">{{ item.display }}</span>
+            <span class="stat__label">{{ item.label }}</span>
+            <span class="stat__hint">Hover to explore map</span>
+          </button>
+
+          <div
+            class="map-pop"
+            id="countries-map"
+            role="dialog"
+            aria-label="Countries served map"
+            [class.is-visible]="mapOpen()"
+            [attr.aria-hidden]="!mapOpen()"
+            (mouseenter)="keepOpen()"
+            (mouseleave)="scheduleClose()"
+          >
+            <div class="map-pop__head">
+              <p>Global coverage</p>
+              <strong>95 countries · neon markers</strong>
+            </div>
+            <div class="map-pop__canvas" [class.is-ready]="mapReady()" #mapHost></div>
+            @if (!mapReady()) {
+              <p class="map-pop__loading">Loading map…</p>
+            }
+          </div>
+        } @else {
+          <p class="stat__value">{{ item.display }}</p>
+          <p class="stat__label">{{ item.label }}</p>
+        }
       </article>
     }
   </div>
