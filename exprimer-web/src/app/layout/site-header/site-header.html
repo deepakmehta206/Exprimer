@@ -1,7 +1,13 @@
 <header class="header">
   <div class="container header__inner">
     <a routerLink="/home" class="brand" (click)="closeMenu()">
-      <span class="brand__text">{{ settings()?.brandName || 'Exprimer' }}</span>
+      <img
+        class="brand__logo"
+        src="/brand/exprimer-logo.png"
+        alt="Exprimer Group of Companies"
+        width="180"
+        height="64"
+      />
     </a>
 
     <button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen">

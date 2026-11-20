@@ -71,3 +71,8 @@ When adding new verticals or similar modules, extend this pattern (new accent to
 
 - Enquiry/contact forms use the same glass card chrome (`cta-section`).
 - Native `<select>` is not allowed for branded UI — use modular `app-glass-select` (`shared/glass-select`) with `ControlValueAccessor`, backdrop on touch, flip-above placement, and Escape/outside click close.
+
+## Brand & WhatsApp
+
+- Header brand mark: `/brand/exprimer-logo.png` (not plain text).
+- Floating WhatsApp uses modular `app-whatsapp-fab` (`shared/whatsapp-fab`) — pass `phone` (default `7011982275`); do not hardcode ad-hoc FAB markup elsewhere.

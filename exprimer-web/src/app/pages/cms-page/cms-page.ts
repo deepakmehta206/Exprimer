@@ -8,10 +8,11 @@ import { SiteFooter } from '../../layout/site-footer/site-footer';
 import { SiteHeader } from '../../layout/site-header/site-header';
 import { SectionHost } from '../../sections/section-host/section-host';
 import { MouseGlow } from '../../shared/mouse-glow/mouse-glow';
+import { WhatsappFab } from '../../shared/whatsapp-fab/whatsapp-fab';
 
 @Component({
   selector: 'app-cms-page',
-  imports: [SiteHeader, SiteFooter, SectionHost, MouseGlow],
+  imports: [SiteHeader, SiteFooter, SectionHost, MouseGlow, WhatsappFab],
   templateUrl: './cms-page.html',
   styleUrl: './cms-page.scss',
 })
@@ -25,6 +26,7 @@ export class CmsPage implements OnInit {
   readonly page = signal<CmsPageModel | null>(null);
   readonly loading = signal(true);
   readonly error = signal('');
+  readonly whatsAppPhone = '917011982275';
 
   ngOnInit(): void {
     this.cms.getSettings().subscribe({

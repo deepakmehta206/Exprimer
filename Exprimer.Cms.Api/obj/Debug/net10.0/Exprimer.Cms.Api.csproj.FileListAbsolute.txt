@@ -34,3 +34,4 @@ D:\MyProjects\Angular\manish\Exprimer.Cms.Api\obj\Debug\net10.0\refint\Exprimer.
 D:\MyProjects\Angular\manish\Exprimer.Cms.Api\obj\Debug\net10.0\Exprimer.Cms.Api.pdb
 D:\MyProjects\Angular\manish\Exprimer.Cms.Api\obj\Debug\net10.0\Exprimer.Cms.Api.genruntimeconfig.cache
 D:\MyProjects\Angular\manish\Exprimer.Cms.Api\obj\Debug\net10.0\ref\Exprimer.Cms.Api.dll
+D:\MyProjects\Angular\manish\Exprimer.Cms.Api\obj\Debug\net10.0\Exprimer.Cms.Api.sourcelink.json

@@ -1,0 +1,129 @@
+.wa-fab {
+  --wa: #25d366;
+  --wa-deep: #128c7e;
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(145deg, var(--wa), var(--wa-deep));
+  box-shadow:
+    0 12px 28px rgba(18, 140, 126, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+  transition:
+    transform 0.3s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    box-shadow 0.3s ease;
+}
+
+.wa-fab--bl {
+  right: auto;
+  left: max(1rem, env(safe-area-inset-left));
+}
+
+.wa-fab__glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(37, 211, 102, 0.45), transparent 70%);
+  opacity: 0.75;
+  z-index: -1;
+  pointer-events: none;
+  animation: wa-pulse 2.4s ease-in-out infinite;
+}
+
+.wa-fab__icon {
+  width: 1.65rem;
+  height: 1.65rem;
+  display: block;
+}
+
+.wa-fab__tip {
+  position: absolute;
+  right: calc(100% + 0.65rem);
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  white-space: nowrap;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(12, 12, 16, 0.92);
+  color: #e8e8f0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.wa-fab--bl .wa-fab__tip {
+  right: auto;
+  left: calc(100% + 0.65rem);
+  transform: translateY(-50%) translateX(-6px);
+}
+
+.wa-fab:hover,
+.wa-fab:focus-visible {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow:
+    0 16px 36px rgba(18, 140, 126, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+  outline: none;
+}
+
+.wa-fab:hover .wa-fab__tip,
+.wa-fab:focus-visible .wa-fab__tip {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+@keyframes wa-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-fab__glow {
+    animation: none;
+  }
+
+  .wa-fab {
+    transition: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .wa-fab {
+    width: 3.75rem;
+    height: 3.75rem;
+  }
+
+  .wa-fab__tip {
+    display: none;
+  }
+}
+
+@media (min-width: 1600px) {
+  .wa-fab {
+    width: 3.85rem;
+    height: 3.85rem;
+    right: max(1.5rem, env(safe-area-inset-right));
+    bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+}

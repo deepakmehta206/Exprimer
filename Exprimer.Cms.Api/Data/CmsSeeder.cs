@@ -12,21 +12,12 @@ public static class CmsSeeder
 
     public static void Seed(CmsDbContext db)
     {
+        EnsureSiteSettings(db);
+
         if (db.Pages.Any())
         {
             return;
         }
-
-        db.SiteSettings.Add(new SiteSettings
-        {
-            Id = 1,
-            BrandName = "Exprimer",
-            Tagline = "Global Experts in Media Distribution, Recruitment & Verification",
-            PhonePrimary = "+91-7011982275",
-            PhoneSecondary = "+91-9560240010",
-            Email = "amit@exprimergroup.com",
-            WhatsApp = "919315964933"
-        });
 
         var home = new Page
         {
@@ -224,4 +215,34 @@ public static class CmsSeeder
         IsVisible = true,
         PayloadJson = JsonSerializer.Serialize(payload, JsonOptions)
     };
+
+    private static void EnsureSiteSettings(CmsDbContext db)
+    {
+        const string whatsApp = "917011982275";
+        var settings = db.SiteSettings.FirstOrDefault(s => s.Id == 1);
+        if (settings is null)
+        {
+            db.SiteSettings.Add(new SiteSettings
+            {
+                Id = 1,
+                BrandName = "Exprimer",
+                Tagline = "Global Experts in Media Distribution, Recruitment & Verification",
+                PhonePrimary = "+91-7011982275",
+                PhoneSecondary = "+91-9560240010",
+                Email = "amit@exprimergroup.com",
+                WhatsApp = whatsApp
+            });
+        }
+        else
+        {
+            settings.BrandName = "Exprimer";
+            settings.Tagline = "Global Experts in Media Distribution, Recruitment & Verification";
+            settings.PhonePrimary = "+91-7011982275";
+            settings.PhoneSecondary = "+91-9560240010";
+            settings.Email = "amit@exprimergroup.com";
+            settings.WhatsApp = whatsApp;
+        }
+
+        db.SaveChanges();
+    }
 }
