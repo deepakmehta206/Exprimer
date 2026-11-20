@@ -1,0 +1,75 @@
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.social__btn {
+  --accent: #d6b25e;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.65rem;
+  height: 2.65rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(12, 12, 16, 0.72);
+  color: #f0f0f5;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+  transition:
+    transform 0.28s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    color 0.28s ease;
+}
+
+.social__btn svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  display: block;
+}
+
+.social__btn--linkedin {
+  --accent: #0a66c2;
+}
+
+.social__btn--instagram {
+  --accent: #e1306c;
+}
+
+.social__btn--facebook {
+  --accent: #1877f2;
+}
+
+.social__btn:hover,
+.social__btn:focus-visible {
+  transform: translateY(-2px);
+  color: #fff;
+  border-color: color-mix(in srgb, var(--accent) 55%, rgba(255, 255, 255, 0.15));
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.35),
+    0 0 22px color-mix(in srgb, var(--accent) 40%, transparent);
+  outline: none;
+}
+
+.social--compact .social__btn {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 12px;
+}
+
+@media (pointer: coarse) {
+  .social__btn {
+    width: 2.85rem;
+    height: 2.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social__btn {
+    transition: none;
+  }
+}

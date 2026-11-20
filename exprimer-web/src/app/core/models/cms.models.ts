@@ -6,6 +6,9 @@ export interface SiteSettings {
   phoneSecondary: string;
   email: string;
   whatsApp: string;
+  linkedIn?: string;
+  instagram?: string;
+  facebook?: string;
 }
 
 export interface PageSection {

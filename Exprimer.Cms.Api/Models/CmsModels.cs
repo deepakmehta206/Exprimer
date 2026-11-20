@@ -9,6 +9,9 @@ public class SiteSettings
     public string PhoneSecondary { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string WhatsApp { get; set; } = string.Empty;
+    public string LinkedIn { get; set; } = "https://www.linkedin.com/company/exprimer-group/";
+    public string Instagram { get; set; } = "https://www.instagram.com/exprimergroup/";
+    public string Facebook { get; set; } = string.Empty;
 }
 
 public class Page

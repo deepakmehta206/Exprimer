@@ -38,6 +38,9 @@ public class CmsController(CmsDbContext db) : ControllerBase
         settings.PhoneSecondary = request.PhoneSecondary;
         settings.Email = request.Email;
         settings.WhatsApp = request.WhatsApp;
+        settings.LinkedIn = request.LinkedIn;
+        settings.Instagram = request.Instagram;
+        settings.Facebook = request.Facebook;
         await db.SaveChangesAsync();
         return Ok(settings);
     }

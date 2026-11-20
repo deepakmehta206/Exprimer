@@ -76,3 +76,4 @@ When adding new verticals or similar modules, extend this pattern (new accent to
 
 - Header brand mark: `/brand/exprimer-logo.png` (not plain text).
 - Floating WhatsApp uses modular `app-whatsapp-fab` (`shared/whatsapp-fab`) — pass `phone` (default `7011982275`); do not hardcode ad-hoc FAB markup elsewhere.
+- Social icons use modular `app-social-links` (`shared/social-links`) — LinkedIn `https://www.linkedin.com/company/exprimer-group/`, Instagram `https://www.instagram.com/exprimergroup/`; Facebook only if URL provided.

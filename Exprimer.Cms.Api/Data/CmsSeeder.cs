@@ -219,6 +219,8 @@ public static class CmsSeeder
     private static void EnsureSiteSettings(CmsDbContext db)
     {
         const string whatsApp = "917011982275";
+        const string linkedIn = "https://www.linkedin.com/company/exprimer-group/";
+        const string instagram = "https://www.instagram.com/exprimergroup/";
         var settings = db.SiteSettings.FirstOrDefault(s => s.Id == 1);
         if (settings is null)
         {
@@ -230,7 +232,10 @@ public static class CmsSeeder
                 PhonePrimary = "+91-7011982275",
                 PhoneSecondary = "+91-9560240010",
                 Email = "amit@exprimergroup.com",
-                WhatsApp = whatsApp
+                WhatsApp = whatsApp,
+                LinkedIn = linkedIn,
+                Instagram = instagram,
+                Facebook = string.Empty
             });
         }
         else
@@ -241,6 +246,9 @@ public static class CmsSeeder
             settings.PhoneSecondary = "+91-9560240010";
             settings.Email = "amit@exprimergroup.com";
             settings.WhatsApp = whatsApp;
+            settings.LinkedIn = linkedIn;
+            settings.Instagram = instagram;
+            settings.Facebook = string.Empty;
         }
 
         db.SaveChanges();

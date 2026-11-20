@@ -9,6 +9,13 @@
         height="72"
       />
       <p class="footer__tag">{{ settings()?.tagline }}</p>
+      <div class="footer__social">
+        <app-social-links
+          [linkedIn]="settings()?.linkedIn || defaultLinkedIn"
+          [instagram]="settings()?.instagram || defaultInstagram"
+          [facebook]="settings()?.facebook || ''"
+        />
+      </div>
     </div>
     <div>
       <p class="footer__label">Contact</p>
@@ -20,6 +27,8 @@
       <p class="footer__label">Quick links</p>
       <a href="/#services">Services</a>
       <a href="/#contact">Enquiry</a>
+      <a href="https://www.linkedin.com/company/exprimer-group/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://www.instagram.com/exprimergroup/" target="_blank" rel="noopener noreferrer">Instagram</a>
     </div>
   </div>
   <div class="container footer__copy">
