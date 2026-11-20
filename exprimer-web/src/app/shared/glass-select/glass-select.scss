@@ -1,0 +1,171 @@
+.glass-select {
+  --accent: #d6b25e;
+  --accent-2: #f59e0b;
+  --glow: rgba(214, 178, 94, 0.35);
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.glass-select.is-open {
+  z-index: 40;
+}
+
+.glass-select.is-disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.glass-select__backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.glass-select__trigger {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(8, 8, 12, 0.55);
+  color: var(--ink, #f5f5f5);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.glass-select__trigger:hover,
+.glass-select__trigger:focus-visible,
+.glass-select.is-open .glass-select__trigger {
+  border-color: color-mix(in srgb, var(--accent) 45%, rgba(255, 255, 255, 0.12));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent) inset,
+    0 0 24px color-mix(in srgb, var(--glow) 40%, transparent);
+  outline: none;
+}
+
+.glass-select__trigger .is-placeholder {
+  color: #8b8b9a;
+}
+
+.glass-select__chevron {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  opacity: 0.7;
+  transition: transform 0.25s ease;
+  flex: 0 0 auto;
+}
+
+.glass-select.is-open .glass-select__chevron {
+  transform: rotate(225deg) translateY(-2px);
+}
+
+.glass-select__menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.45rem);
+  z-index: 3;
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 45%),
+    rgba(10, 10, 14, 0.96);
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.55),
+    0 0 32px color-mix(in srgb, var(--glow) 35%, transparent);
+  backdrop-filter: blur(16px);
+  max-height: min(280px, 50vh);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.glass-select__menu.is-above {
+  top: auto;
+  bottom: calc(100% + 0.45rem);
+}
+
+.glass-select__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 2.65rem;
+  padding: 0.7rem 0.85rem;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #e8e8f0;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.glass-select__option:hover,
+.glass-select__option:focus-visible {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: #fff;
+  outline: none;
+}
+
+.glass-select__option.is-active {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  color: #fff;
+}
+
+.glass-select__option em {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+@media (max-width: 900px), (pointer: coarse) {
+  .glass-select__backdrop {
+    display: block;
+  }
+
+  .glass-select__menu {
+    position: fixed;
+    left: 0.75rem;
+    right: 0.75rem;
+    top: auto;
+    bottom: 0.75rem;
+    max-height: min(55vh, 360px);
+    border-radius: 18px 18px 14px 14px;
+    z-index: 5;
+  }
+
+  .glass-select__menu.is-above {
+    top: auto;
+    bottom: 0.75rem;
+  }
+
+  .glass-select__option {
+    min-height: 2.85rem;
+  }
+}

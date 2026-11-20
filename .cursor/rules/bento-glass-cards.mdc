@@ -66,3 +66,8 @@ Reference: `exprimer-web/src/app/sections/services-section/`
 ```
 
 When adding new verticals or similar modules, extend this pattern (new accent token + micro-UI) instead of inventing a new card system.
+
+## Forms & selects
+
+- Enquiry/contact forms use the same glass card chrome (`cta-section`).
+- Native `<select>` is not allowed for branded UI — use modular `app-glass-select` (`shared/glass-select`) with `ControlValueAccessor`, backdrop on touch, flip-above placement, and Escape/outside click close.

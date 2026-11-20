@@ -4,12 +4,13 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CtaData } from '../../core/models/cms.models';
 import { CmsService } from '../../core/services/cms.service';
+import { GlassSelect, GlassSelectOption } from '../../shared/glass-select/glass-select';
 
 gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-cta-section',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, GlassSelect],
   templateUrl: './cta-section.html',
   styleUrl: './cta-section.scss',
 })
@@ -24,6 +25,12 @@ export class CtaSection implements AfterViewInit, OnDestroy {
   readonly success = signal(false);
   readonly error = signal('');
 
+  readonly interestOptions: GlassSelectOption[] = [
+    { label: 'Videos & Games', value: 'Media Distribution' },
+    { label: 'Manpower Consulting', value: 'Recruitment' },
+    { label: 'Background Verification', value: 'Background Verification' },
+  ];
+
   readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
@@ -35,12 +42,16 @@ export class CtaSection implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     const el = this.root.nativeElement;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     this.ctx = gsap.context(() => {
-      gsap.from('.cta__panel > *', {
+      if (reduce) return;
+      gsap.from('.cta-card', {
         autoAlpha: 0,
-        y: 28,
-        stagger: 0.1,
-        duration: 0.8,
+        y: 36,
+        scale: 0.98,
+        stagger: 0.12,
+        duration: 0.85,
         ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 80%' },
       });

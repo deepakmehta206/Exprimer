@@ -49,6 +49,8 @@ export class StatsSection implements AfterViewInit, OnDestroy {
   readonly activePopover = signal<PopoverKind | null>(null);
   readonly mapReady = signal(false);
   readonly isTouchUi = signal(false);
+  readonly popoverAbove = signal(false);
+  readonly popoverAlignEnd = signal(false);
 
   readonly timeline = [
     {
@@ -113,13 +115,20 @@ export class StatsSection implements AfterViewInit, OnDestroy {
   private onKeydown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') this.closePopover();
   };
-  private onViewportChange = () => this.refreshTouchMode();
+  private onViewportChange = () => {
+    this.refreshTouchMode();
+    if (this.activePopover()) this.repositionPopover();
+  };
+  private onWinResize = () => {
+    if (this.activePopover()) this.repositionPopover();
+  };
 
   ngAfterViewInit(): void {
     this.refreshTouchMode();
     matchMedia('(pointer: coarse)').addEventListener?.('change', this.onViewportChange);
     matchMedia('(max-width: 900px)').addEventListener?.('change', this.onViewportChange);
     window.addEventListener('keydown', this.onKeydown);
+    window.addEventListener('resize', this.onWinResize, { passive: true });
 
     this.items.set(
       this.prepared().map((item) => ({
@@ -166,6 +175,7 @@ export class StatsSection implements AfterViewInit, OnDestroy {
     this.popoverTween?.kill();
     this.unlockBodyScroll();
     window.removeEventListener('keydown', this.onKeydown);
+    window.removeEventListener('resize', this.onWinResize);
     matchMedia('(pointer: coarse)').removeEventListener?.('change', this.onViewportChange);
     matchMedia('(max-width: 900px)').removeEventListener?.('change', this.onViewportChange);
     const host = this.mapHost?.nativeElement;
@@ -190,7 +200,10 @@ export class StatsSection implements AfterViewInit, OnDestroy {
     clearTimeout(this.openTimer);
     this.activePopover.set(kind);
     this.lockBodyScroll();
-    this.openTimer = window.setTimeout(() => this.onPopoverOpened(kind), 0);
+    this.openTimer = window.setTimeout(() => {
+      this.repositionPopover();
+      this.onPopoverOpened(kind);
+    }, 0);
   }
 
   scheduleClose(): void {
@@ -206,7 +219,46 @@ export class StatsSection implements AfterViewInit, OnDestroy {
   closePopover(): void {
     clearTimeout(this.closeTimer);
     this.activePopover.set(null);
+    this.popoverAbove.set(false);
+    this.popoverAlignEnd.set(false);
     this.unlockBodyScroll();
+  }
+
+  private repositionPopover(): void {
+    if (this.isTouchUi()) {
+      this.popoverAbove.set(false);
+      this.popoverAlignEnd.set(false);
+      return;
+    }
+
+    const kind = this.activePopover();
+    if (!kind) return;
+
+    const openStat = this.root.nativeElement.querySelector(
+      `.stat.is-open`
+    ) as HTMLElement | null;
+    const pop = this.root.nativeElement.querySelector(
+      `.stat-pop.is-visible`
+    ) as HTMLElement | null;
+    if (!openStat || !pop) {
+      this.openTimer = window.setTimeout(() => this.repositionPopover(), 40);
+      return;
+    }
+
+    const gap = 14;
+    const margin = 12;
+    const trigger = openStat.getBoundingClientRect();
+    const popH = pop.offsetHeight || 320;
+    const popW = pop.offsetWidth || 420;
+    const spaceBelow = window.innerHeight - trigger.bottom - gap;
+    const spaceAbove = trigger.top - gap;
+    const preferAbove = spaceBelow < popH && spaceAbove > spaceBelow;
+
+    this.popoverAbove.set(preferAbove);
+
+    const overflowRight = trigger.left + popW > window.innerWidth - margin;
+    const overflowLeft = trigger.right - popW < margin;
+    this.popoverAlignEnd.set(overflowRight && !overflowLeft);
   }
 
   togglePopover(event: Event, kind: PopoverKind): void {
@@ -356,6 +408,7 @@ export class StatsSection implements AfterViewInit, OnDestroy {
 
     this.mapInjected = true;
     this.mapReady.set(true);
+    requestAnimationFrame(() => this.repositionPopover());
   }
 
   private animateHighlights(host: HTMLElement): void {

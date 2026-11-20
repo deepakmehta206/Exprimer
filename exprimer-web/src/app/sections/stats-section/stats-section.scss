@@ -92,7 +92,9 @@
   position: absolute;
   left: 0;
   top: calc(100% + 0.85rem);
+  bottom: auto;
   width: min(72vw, 640px);
+  max-width: min(92vw, 720px);
   padding: 1rem 1rem 0.85rem;
   border: 1px solid var(--line);
   background: rgba(10, 10, 10, 0.96);
@@ -114,6 +116,21 @@
   visibility: visible;
   pointer-events: auto;
   transform: none;
+}
+
+.stat-pop.is-above {
+  top: auto;
+  bottom: calc(100% + 0.85rem);
+  transform: translateY(-8px) scale(0.98);
+}
+
+.stat-pop.is-above.is-visible {
+  transform: none;
+}
+
+.stat-pop.is-align-end {
+  left: auto;
+  right: 0;
 }
 
 .stat-pop__head {

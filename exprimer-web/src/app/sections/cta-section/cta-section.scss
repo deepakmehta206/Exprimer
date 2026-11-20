@@ -4,142 +4,347 @@
   overflow: hidden;
 }
 
-.cta::before {
-  content: '';
+.cta__layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 1.15rem;
+  align-items: stretch;
+}
+
+.cta__glow {
+  position: absolute;
+  inset: -12% -6% auto;
+  height: 70%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 40%, rgba(168, 85, 247, 0.22), transparent 55%),
+    radial-gradient(ellipse at 78% 25%, rgba(214, 178, 94, 0.2), transparent 50%),
+    radial-gradient(ellipse at 55% 85%, rgba(236, 72, 153, 0.14), transparent 55%);
+  filter: blur(28px);
+}
+
+.cta-card {
+  --accent: #d6b25e;
+  --accent-2: #f59e0b;
+  --glow: rgba(214, 178, 94, 0.35);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 42%),
+    rgba(12, 12, 16, 0.72);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    0 0 40px color-mix(in srgb, var(--glow) 40%, transparent);
+  backdrop-filter: blur(18px);
+  overflow: visible;
+}
+
+.cta-card--copy {
+  --accent: #c084fc;
+  --accent-2: #f472b6;
+  --glow: rgba(192, 132, 252, 0.4);
+  overflow: hidden;
+}
+
+.cta-card--form {
+  --accent: #fbbf24;
+  --accent-2: #fb7185;
+  --glow: rgba(251, 191, 36, 0.38);
+}
+
+.cta-card__rim {
   position: absolute;
   inset: 0;
-  z-index: -1;
-  opacity: 0.35;
+  border-radius: inherit;
   pointer-events: none;
-  background-image:
-    linear-gradient(rgba(245, 245, 245, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245, 245, 245, 0.05) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse at 70% 40%, #000 10%, transparent 70%);
+  background: radial-gradient(
+    120% 80% at 50% 0%,
+    color-mix(in srgb, var(--accent) 22%, transparent),
+    transparent 55%
+  );
 }
 
-.cta::after {
-  content: '';
-  position: absolute;
-  width: 55vw;
-  height: 55vw;
-  max-width: 720px;
-  max-height: 720px;
-  right: -15%;
-  bottom: -30%;
-  z-index: -1;
+.cta-card__top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.cta-card__index {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: color-mix(in srgb, var(--accent) 80%, white);
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.cta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e8e8f0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cta-pill--live i {
+  display: block;
+  width: 0.45rem;
+  height: 0.45rem;
   border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(closest-side, rgba(214, 178, 94, 0.16), transparent 70%);
-  filter: blur(30px);
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  animation: cta-pulse 1.6s ease-in-out infinite;
 }
 
-.cta__panel {
-  display: grid;
-  grid-template-columns: 0.95fr 1.05fr;
-  gap: clamp(2rem, 5vw, 4rem);
-  padding: 0;
-  align-items: start;
+.cta-card__body {
+  position: relative;
+  z-index: 1;
 }
 
-.cta__copy .section-title {
+.cta-card__body .section-title {
   max-width: 11ch;
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
 }
 
-.cta__copy ul {
-  margin: 2rem 0 0;
+.cta-card__body .section-subtitle {
+  color: #b8b8c8;
+}
+
+.cta-checks {
+  margin: 1.6rem 0 0;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 0.85rem;
+  gap: 0.75rem;
 }
 
-.cta__copy li {
-  position: relative;
-  padding-left: 1.4rem;
-  color: #d7d7d7;
+.cta-checks li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  padding: 0.75rem 0.85rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #d7d7e2;
   font-weight: 500;
 }
 
-.cta__copy li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.55rem;
-  width: 0.55rem;
-  height: 0.55rem;
-  background: var(--gold);
+.cta-checks__icon {
+  width: 1.7rem;
+  height: 1.7rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #6ee7b7;
+  background: rgba(52, 211, 153, 0.14);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
 }
 
-.cta__form {
+.cta-fields {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  padding: clamp(1.4rem, 3vw, 2rem);
-  background: var(--surface);
-  border: 1px solid var(--line);
+  gap: 0.85rem;
+  flex: 1;
 }
 
-.cta__form label {
+.cta-field {
   display: grid;
   gap: 0.4rem;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #9a9aab;
   font-weight: 700;
 }
 
-.cta__form label.full {
+.cta-field--full {
   grid-column: 1 / -1;
 }
 
-.cta__form input,
-.cta__form textarea,
-.cta__form select {
+.cta-field input,
+.cta-field textarea {
   width: 100%;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  border-radius: 0;
-  background: transparent;
+  min-height: 3rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(8, 8, 12, 0.55);
   color: var(--ink);
-  padding: 0.85rem 0;
+  font: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 500;
+  outline: none;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+  resize: vertical;
+}
+
+.cta-field textarea {
+  min-height: 7rem;
+}
+
+.cta-field input::placeholder,
+.cta-field textarea::placeholder {
+  color: #6f6f7c;
+}
+
+.cta-field input:focus,
+.cta-field textarea:focus {
+  border-color: color-mix(in srgb, var(--accent) 50%, rgba(255, 255, 255, 0.12));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent) inset,
+    0 0 22px color-mix(in srgb, var(--glow) 35%, transparent);
+}
+
+.cta-field app-glass-select {
+  display: block;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 500;
+}
+
+.cta-submit {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: start;
+  min-height: 2.9rem;
+  margin-top: 1rem;
+  padding: 0.85rem 1.45rem;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(105deg, var(--accent), var(--accent-2));
+  color: #140f08;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow:
+    0 10px 28px color-mix(in srgb, var(--accent) 45%, transparent),
+    0 0 24px color-mix(in srgb, var(--accent-2) 35%, transparent);
+  transition: transform 0.3s var(--ease-out), filter 0.3s ease, opacity 0.3s ease;
+}
+
+.cta-submit:hover:not(:disabled),
+.cta-submit:focus-visible:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
   outline: none;
 }
 
-.cta__form input:focus,
-.cta__form textarea:focus,
-.cta__form select:focus {
-  border-bottom-color: var(--gold);
-}
-
-.cta__form .btn {
-  grid-column: 1 / -1;
-  justify-self: start;
-  margin-top: 0.5rem;
+.cta-submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
 }
 
 .cta__success {
-  grid-column: 1 / -1;
-  margin: 0;
-  color: var(--gold);
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0.85rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  background: rgba(52, 211, 153, 0.1);
+  color: #bbf7d0;
   font-weight: 700;
 }
 
 .cta__error {
-  grid-column: 1 / -1;
-  margin: 0;
+  position: relative;
+  z-index: 1;
+  margin: 0.75rem 0 0;
   color: var(--danger);
+  font-weight: 600;
+}
+
+@keyframes cta-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-pill--live i {
+    animation: none;
+  }
+
+  .cta-submit {
+    transition: none;
+  }
 }
 
 @media (max-width: 900px) {
-  .cta__panel {
+  .cta__layout {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 560px) {
-  .cta__form {
+  .cta-card {
+    border-radius: 22px;
+    padding: 1rem;
+  }
+
+  .cta-fields {
     grid-template-columns: 1fr;
+  }
+
+  .cta-submit {
+    width: 100%;
+    min-height: 3rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .cta-card {
+    padding: 1.45rem;
+  }
+
+  .cta-card__body .section-title {
+    font-size: clamp(2.4rem, 2vw, 3.8rem);
+  }
+}
+
+@media (pointer: coarse) {
+  .cta-field input,
+  .cta-field textarea,
+  .cta-submit {
+    min-height: 3rem;
   }
 }

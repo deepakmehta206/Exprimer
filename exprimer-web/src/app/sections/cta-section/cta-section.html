@@ -1,54 +1,75 @@
 <section class="section cta" [attr.id]="data().id || 'contact'" #root>
-  <div class="container cta__panel">
-    <div class="cta__copy">
-      <h2 class="section-title">{{ data().title }}</h2>
-      <p class="section-subtitle">{{ data().subtitle }}</p>
-      <ul>
-        @for (bullet of data().bullets; track bullet) {
-          <li>{{ bullet }}</li>
-        }
-      </ul>
-    </div>
+  <div class="container cta__layout">
+    <div class="cta__glow" aria-hidden="true"></div>
 
-    <form class="cta__form" [formGroup]="form" (ngSubmit)="submit()">
+    <article class="cta-card cta-card--copy">
+      <span class="cta-card__rim" aria-hidden="true"></span>
+      <div class="cta-card__top">
+        <span class="cta-pill">Partner desk</span>
+        <span class="cta-card__index">ENQ</span>
+      </div>
+      <div class="cta-card__body">
+        <h2 class="section-title">{{ data().title }}</h2>
+        <p class="section-subtitle">{{ data().subtitle }}</p>
+        <ul class="cta-checks">
+          @for (bullet of data().bullets; track bullet) {
+            <li>
+              <span class="cta-checks__icon">✓</span>
+              <span>{{ bullet }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    </article>
+
+    <form class="cta-card cta-card--form" [formGroup]="form" (ngSubmit)="submit()">
+      <span class="cta-card__rim" aria-hidden="true"></span>
+      <div class="cta-card__top">
+        <span class="cta-pill cta-pill--live"><i></i> Live intake</span>
+        <span class="cta-card__index">01</span>
+      </div>
+
       @if (success()) {
         <p class="cta__success">Thanks — we will connect within a day.</p>
       }
 
-      <label>
-        <span>Name</span>
-        <input formControlName="name" autocomplete="name" />
-      </label>
-      <label>
-        <span>Email</span>
-        <input formControlName="email" type="email" autocomplete="email" />
-      </label>
-      <label>
-        <span>Phone</span>
-        <input formControlName="phone" autocomplete="tel" />
-      </label>
-      <label>
-        <span>Company</span>
-        <input formControlName="company" />
-      </label>
-      <label>
-        <span>Interest</span>
-        <select formControlName="interest">
-          <option>Media Distribution</option>
-          <option>Recruitment</option>
-          <option>Background Verification</option>
-        </select>
-      </label>
-      <label class="full">
-        <span>Message</span>
-        <textarea formControlName="message" rows="4"></textarea>
-      </label>
+      <div class="cta-fields">
+        <label class="cta-field">
+          <span>Name</span>
+          <input formControlName="name" autocomplete="name" placeholder="Your name" />
+        </label>
+        <label class="cta-field">
+          <span>Email</span>
+          <input formControlName="email" type="email" autocomplete="email" placeholder="you@company.com" />
+        </label>
+        <label class="cta-field">
+          <span>Phone</span>
+          <input formControlName="phone" autocomplete="tel" placeholder="+91 …" />
+        </label>
+        <label class="cta-field">
+          <span>Company</span>
+          <input formControlName="company" placeholder="Organization" />
+        </label>
+        <label class="cta-field cta-field--full">
+          <span>Interest</span>
+          <app-glass-select
+            formControlName="interest"
+            [options]="interestOptions"
+            placeholder="Choose a vertical"
+            ariaLabel="Interest"
+          />
+        </label>
+        <label class="cta-field cta-field--full">
+          <span>Message</span>
+          <textarea formControlName="message" rows="4" placeholder="Tell us what you need…"></textarea>
+        </label>
+      </div>
 
       @if (error()) {
         <p class="cta__error">{{ error() }}</p>
       }
 
-      <button class="btn btn-primary" type="submit" [disabled]="submitting()">
+      <button class="cta-submit" type="submit" [disabled]="submitting()">
         {{ submitting() ? 'Sending…' : data().ctaLabel }}
       </button>
     </form>
