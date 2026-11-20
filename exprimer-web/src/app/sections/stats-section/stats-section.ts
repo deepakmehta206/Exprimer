@@ -12,11 +12,14 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { StatsData } from '../../core/models/cms.models';
 
 gsap.registerPlugin(ScrollTrigger);
+
+type PopoverKind = 'map' | 'timeline' | 'verticals';
 
 type StatView = {
   label: string;
@@ -25,11 +28,15 @@ type StatView = {
   suffix: string;
   numeric: boolean;
   display: string;
-  isCountries: boolean;
+  hasPopover: boolean;
+  popover: PopoverKind | null;
+  hint: string;
+  hintTouch: string;
 };
 
 @Component({
   selector: 'app-stats-section',
+  imports: [RouterLink],
   templateUrl: './stats-section.html',
   styleUrl: './stats-section.scss',
 })
@@ -39,8 +46,53 @@ export class StatsSection implements AfterViewInit, OnDestroy {
 
   readonly data = input.required<StatsData>();
   readonly items = signal<StatView[]>([]);
-  readonly mapOpen = signal(false);
+  readonly activePopover = signal<PopoverKind | null>(null);
   readonly mapReady = signal(false);
+  readonly isTouchUi = signal(false);
+
+  readonly timeline = [
+    {
+      year: 'Year 1',
+      title: 'Foundation',
+      text: 'Exprimer begins with media distribution partnerships across key markets.',
+    },
+    {
+      year: 'Year 2–3',
+      title: 'OTT expansion',
+      text: 'Rights packaging and content ops scale for global OTT and VOD platforms.',
+    },
+    {
+      year: 'Year 4–5',
+      title: 'Talent + diligence',
+      text: 'Manpower consulting and AI-backed verification join the same operating system.',
+    },
+    {
+      year: 'Year 6+',
+      title: 'Global desk',
+      text: 'Coverage across 80+ countries with three verticals under one brand.',
+    },
+  ];
+
+  readonly verticals = [
+    {
+      index: '01',
+      slug: 'media',
+      title: 'Videos & Games',
+      text: 'OTT, VOD and TV rights for platforms that move fast.',
+    },
+    {
+      index: '02',
+      slug: 'recruitment',
+      title: 'Manpower Consulting',
+      text: 'AI-assisted sourcing for high-growth hiring teams.',
+    },
+    {
+      index: '03',
+      slug: 'verification',
+      title: 'Background Verification',
+      text: 'Reliable diligence with AI-backed checks at scale.',
+    },
+  ];
 
   readonly prepared = computed(() =>
     (this.data().items || []).map((item) => this.toStatView(item.value, item.label))
@@ -48,6 +100,8 @@ export class StatsSection implements AfterViewInit, OnDestroy {
 
   @ViewChild('root', { static: true }) root!: ElementRef<HTMLElement>;
   @ViewChild('mapHost') mapHost?: ElementRef<HTMLElement>;
+  @ViewChild('timelineHost') timelineHost?: ElementRef<HTMLElement>;
+  @ViewChild('verticalsHost') verticalsHost?: ElementRef<HTMLElement>;
 
   private ctx?: gsap.Context;
   private closeTimer = 0;
@@ -55,8 +109,18 @@ export class StatsSection implements AfterViewInit, OnDestroy {
   private mapSvgCached = '';
   private mapInjected = false;
   private highlightTimers: gsap.core.Tween[] = [];
+  private popoverTween?: gsap.core.Tween;
+  private onKeydown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') this.closePopover();
+  };
+  private onViewportChange = () => this.refreshTouchMode();
 
   ngAfterViewInit(): void {
+    this.refreshTouchMode();
+    matchMedia('(pointer: coarse)').addEventListener?.('change', this.onViewportChange);
+    matchMedia('(max-width: 900px)').addEventListener?.('change', this.onViewportChange);
+    window.addEventListener('keydown', this.onKeydown);
+
     this.items.set(
       this.prepared().map((item) => ({
         ...item,
@@ -99,6 +163,11 @@ export class StatsSection implements AfterViewInit, OnDestroy {
     clearTimeout(this.closeTimer);
     clearTimeout(this.openTimer);
     this.highlightTimers.forEach((t) => t.kill());
+    this.popoverTween?.kill();
+    this.unlockBodyScroll();
+    window.removeEventListener('keydown', this.onKeydown);
+    matchMedia('(pointer: coarse)').removeEventListener?.('change', this.onViewportChange);
+    matchMedia('(max-width: 900px)').removeEventListener?.('change', this.onViewportChange);
     const host = this.mapHost?.nativeElement;
     if (host) {
       gsap.killTweensOf(host.querySelectorAll('.neon-dot, .neon-dot__ring'));
@@ -106,32 +175,109 @@ export class StatsSection implements AfterViewInit, OnDestroy {
     this.ctx?.revert();
   }
 
-  openMap(): void {
+  onStatEnter(kind: PopoverKind): void {
+    if (this.isTouchUi()) return;
+    this.openPopover(kind);
+  }
+
+  onStatLeave(): void {
+    if (this.isTouchUi()) return;
+    this.scheduleClose();
+  }
+
+  openPopover(kind: PopoverKind): void {
     clearTimeout(this.closeTimer);
     clearTimeout(this.openTimer);
-    this.mapOpen.set(true);
-    // Wait one frame so #mapHost is queryable after first paint of countries row
-    this.openTimer = window.setTimeout(() => this.ensureMap(true), 0);
+    this.activePopover.set(kind);
+    this.lockBodyScroll();
+    this.openTimer = window.setTimeout(() => this.onPopoverOpened(kind), 0);
   }
 
   scheduleClose(): void {
     clearTimeout(this.closeTimer);
-    this.closeTimer = window.setTimeout(() => this.mapOpen.set(false), 220);
+    this.closeTimer = window.setTimeout(() => this.closePopover(), 220);
   }
 
   keepOpen(): void {
+    if (this.isTouchUi()) return;
     clearTimeout(this.closeTimer);
-    this.mapOpen.set(true);
   }
 
-  toggleMap(event: Event): void {
+  closePopover(): void {
+    clearTimeout(this.closeTimer);
+    this.activePopover.set(null);
+    this.unlockBodyScroll();
+  }
+
+  togglePopover(event: Event, kind: PopoverKind): void {
     event.preventDefault();
     event.stopPropagation();
-    if (this.mapOpen()) {
-      this.mapOpen.set(false);
+    if (this.activePopover() === kind) {
+      this.closePopover();
       return;
     }
-    this.openMap();
+    this.openPopover(kind);
+  }
+
+  private refreshTouchMode(): void {
+    const coarse = matchMedia('(pointer: coarse)').matches;
+    const narrow = matchMedia('(max-width: 900px)').matches;
+    this.isTouchUi.set(coarse || narrow);
+  }
+
+  private lockBodyScroll(): void {
+    if (!this.isTouchUi()) return;
+    document.body.style.overflow = 'hidden';
+  }
+
+  private unlockBodyScroll(): void {
+    document.body.style.overflow = '';
+  }
+
+  private onPopoverOpened(kind: PopoverKind): void {
+    if (kind === 'map') {
+      this.ensureMap(true);
+      return;
+    }
+    if (kind === 'timeline') {
+      this.animateTimeline();
+      return;
+    }
+    if (kind === 'verticals') {
+      this.animateVerticals();
+    }
+  }
+
+  private animateTimeline(): void {
+    const host = this.timelineHost?.nativeElement;
+    if (!host) {
+      this.openTimer = window.setTimeout(() => this.animateTimeline(), 40);
+      return;
+    }
+    this.popoverTween?.kill();
+    const items = host.querySelectorAll('.timeline__item');
+    gsap.killTweensOf(items);
+    this.popoverTween = gsap.fromTo(
+      items,
+      { autoAlpha: 0, y: 18 },
+      { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.08, ease: 'power3.out' }
+    );
+  }
+
+  private animateVerticals(): void {
+    const host = this.verticalsHost?.nativeElement;
+    if (!host) {
+      this.openTimer = window.setTimeout(() => this.animateVerticals(), 40);
+      return;
+    }
+    this.popoverTween?.kill();
+    const cards = host.querySelectorAll('.vertical');
+    gsap.killTweensOf(cards);
+    this.popoverTween = gsap.fromTo(
+      cards,
+      { autoAlpha: 0, y: 18 },
+      { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.1, ease: 'power3.out' }
+    );
   }
 
   private prefetchMap(): void {
@@ -179,7 +325,6 @@ export class StatsSection implements AfterViewInit, OnDestroy {
       rootSvg.removeAttribute('width');
       rootSvg.removeAttribute('height');
 
-      // Neon glow filter for red dots
       const ns = 'http://www.w3.org/2000/svg';
       let defs = rootSvg.querySelector('defs');
       if (!defs) {
@@ -347,18 +492,41 @@ export class StatsSection implements AfterViewInit, OnDestroy {
 
   private toStatView(raw: string, label: string): StatView {
     const match = raw.trim().match(/^(\d+(?:\.\d+)?)(.*)$/);
-    const isCountries = /countr/i.test(label);
-    if (!match) {
-      return { label, raw, target: 0, suffix: '', numeric: false, display: raw, isCountries };
+    let popover: PopoverKind | null = null;
+    let hint = '';
+    let hintTouch = '';
+    if (/countr/i.test(label)) {
+      popover = 'map';
+      hint = 'Hover to explore map';
+      hintTouch = 'Tap to explore map';
+    } else if (/year/i.test(label)) {
+      popover = 'timeline';
+      hint = 'Hover for timeline';
+      hintTouch = 'Tap for timeline';
+    } else if (/vertical/i.test(label)) {
+      popover = 'verticals';
+      hint = 'Hover to view verticals';
+      hintTouch = 'Tap to view verticals';
     }
-    return {
+
+    const base = {
       label,
       raw,
+      hasPopover: !!popover,
+      popover,
+      hint,
+      hintTouch,
+    };
+
+    if (!match) {
+      return { ...base, target: 0, suffix: '', numeric: false, display: raw };
+    }
+    return {
+      ...base,
       target: Number(match[1]),
       suffix: match[2] || '',
       numeric: true,
       display: raw,
-      isCountries,
     };
   }
 }

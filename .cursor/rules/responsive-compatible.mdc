@@ -1,0 +1,49 @@
+---
+description: Responsive compatibility for mobile, desktop, and TV across the Exprimer site
+globs: exprimer-web/**/*.{ts,html,scss,css}
+alwaysApply: false
+---
+
+# Responsive: mobile · desktop · TV
+
+Build UI that works on touch phones, mouse desktops, and large TV/lean-back screens. Never ship hover-only interactions.
+
+## Breakpoints (prefer these)
+
+- **Mobile**: `max-width: 480px` (single column) and `max-width: 800px` / `900px` (stacked / sheet UI)
+- **Desktop**: `min-width: 901px` with fine pointer
+- **Large / TV**: `min-width: 1600px` (and optionally `min-width: 1920px`) — larger type, wider popovers, more breathing room; avoid tiny hit targets
+
+Detect touch/narrow UI in TS with `(pointer: coarse)` **or** `max-width: 900px`, not hover alone.
+
+## Interaction rules
+
+- Every hover affordance needs a **tap/click** equivalent (toggle, button, or link).
+- Overlays/popovers on touch or ≤900px: **fixed bottom sheet**, dimmed **backdrop**, visible **close**, **Escape**, and **body scroll lock** while open.
+- Hide close/backdrop only when `(hover: hover) and (pointer: fine) and (min-width: 901px)`.
+- Hit targets ≥ 44×44px on touch. Prefer `@media (pointer: coarse)` for larger taps.
+- Prefer `clamp()` for type/spacing so TV and mobile scale without separate copy blocks.
+
+## Layout
+
+- Mobile-first grids; collapse multi-column stats/cards before they crush.
+- No horizontal page scroll; popovers must not clip off-screen — use sheets on small/touch.
+- Respect `prefers-reduced-motion: reduce` for GSAP/CSS motion.
+- TV: keep focus/contrast high; don’t rely on hover glow as the only state.
+
+## Example
+
+```typescript
+// ✅ touch + narrow share one mode
+readonly isTouchUi = signal(
+  matchMedia('(pointer: coarse)').matches || matchMedia('(max-width: 900px)').matches
+);
+// open on mouseenter only when !isTouchUi(); always support click toggle + Escape
+```
+
+```scss
+// ✅ sheet on touch/narrow; anchored popover on desktop fine pointer
+@media (max-width: 900px), (pointer: coarse) {
+  .pop { position: fixed; inset: auto 0.75rem 0.75rem; max-height: 72vh; overflow: auto; }
+}
+```

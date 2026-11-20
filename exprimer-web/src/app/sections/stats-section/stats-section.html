@@ -1,45 +1,119 @@
-<section class="section stats" #root>
+<section class="section stats" #root [class.is-popover-open]="!!activePopover()">
+  @if (activePopover()) {
+    <button
+      type="button"
+      class="stat-backdrop"
+      aria-label="Close details"
+      (click)="closePopover()"
+    ></button>
+  }
+
   <div class="container stats__grid">
     @for (item of items(); track item.label) {
       <article
         class="stat"
-        [class.stat--map]="item.isCountries"
-        [class.is-open]="item.isCountries && mapOpen()"
-        (mouseenter)="item.isCountries && openMap()"
-        (mouseleave)="item.isCountries && scheduleClose()"
+        [class.stat--interactive]="item.hasPopover"
+        [class.is-open]="item.hasPopover && activePopover() === item.popover"
+        (mouseenter)="item.hasPopover && onStatEnter(item.popover!)"
+        (mouseleave)="item.hasPopover && onStatLeave()"
       >
-        @if (item.isCountries) {
+        @if (item.hasPopover) {
           <button
             type="button"
             class="stat__hit"
-            (click)="toggleMap($event)"
-            [attr.aria-expanded]="mapOpen()"
-            aria-controls="countries-map"
+            (click)="togglePopover($event, item.popover!)"
+            [attr.aria-expanded]="activePopover() === item.popover"
           >
             <span class="stat__value">{{ item.display }}</span>
             <span class="stat__label">{{ item.label }}</span>
-            <span class="stat__hint">Hover to explore map</span>
+            <span class="stat__hint">{{ isTouchUi() ? item.hintTouch : item.hint }}</span>
           </button>
 
-          <div
-            class="map-pop"
-            id="countries-map"
-            role="dialog"
-            aria-label="Countries served map"
-            [class.is-visible]="mapOpen()"
-            [attr.aria-hidden]="!mapOpen()"
-            (mouseenter)="keepOpen()"
-            (mouseleave)="scheduleClose()"
-          >
-            <div class="map-pop__head">
-              <p>Global coverage</p>
-              <strong>95 countries · neon markers</strong>
+          @if (item.popover === 'map') {
+            <div
+              class="stat-pop map-pop"
+              [class.is-visible]="activePopover() === 'map'"
+              [attr.aria-hidden]="activePopover() !== 'map'"
+              (mouseenter)="keepOpen()"
+              (mouseleave)="onStatLeave()"
+            >
+              <div class="stat-pop__head">
+                <div>
+                  <p>Global coverage</p>
+                  <strong>95 countries · neon markers</strong>
+                </div>
+                <button type="button" class="stat-pop__close" (click)="closePopover()" aria-label="Close">
+                  ✕
+                </button>
+              </div>
+              <div class="map-pop__canvas" [class.is-ready]="mapReady()" #mapHost></div>
+              @if (!mapReady()) {
+                <p class="map-pop__loading">Loading map…</p>
+              }
             </div>
-            <div class="map-pop__canvas" [class.is-ready]="mapReady()" #mapHost></div>
-            @if (!mapReady()) {
-              <p class="map-pop__loading">Loading map…</p>
-            }
-          </div>
+          }
+
+          @if (item.popover === 'timeline') {
+            <div
+              class="stat-pop timeline-pop"
+              [class.is-visible]="activePopover() === 'timeline'"
+              [attr.aria-hidden]="activePopover() !== 'timeline'"
+              (mouseenter)="keepOpen()"
+              (mouseleave)="onStatLeave()"
+            >
+              <div class="stat-pop__head">
+                <div>
+                  <p>Our journey</p>
+                  <strong>6+ years of partnership</strong>
+                </div>
+                <button type="button" class="stat-pop__close" (click)="closePopover()" aria-label="Close">
+                  ✕
+                </button>
+              </div>
+              <ol class="timeline" #timelineHost>
+                @for (step of timeline; track step.year) {
+                  <li class="timeline__item">
+                    <span class="timeline__dot"></span>
+                    <p class="timeline__year">{{ step.year }}</p>
+                    <h4>{{ step.title }}</h4>
+                    <p class="timeline__text">{{ step.text }}</p>
+                  </li>
+                }
+              </ol>
+            </div>
+          }
+
+          @if (item.popover === 'verticals') {
+            <div
+              class="stat-pop verticals-pop"
+              [class.is-visible]="activePopover() === 'verticals'"
+              [attr.aria-hidden]="activePopover() !== 'verticals'"
+              (mouseenter)="keepOpen()"
+              (mouseleave)="onStatLeave()"
+            >
+              <div class="stat-pop__head">
+                <div>
+                  <p>What we run</p>
+                  <strong>3 core verticals</strong>
+                </div>
+                <button type="button" class="stat-pop__close" (click)="closePopover()" aria-label="Close">
+                  ✕
+                </button>
+              </div>
+              <div class="verticals" #verticalsHost>
+                @for (v of verticals; track v.slug) {
+                  <a class="vertical" [routerLink]="'/' + v.slug" (click)="closePopover()">
+                    <span class="vertical__index">{{ v.index }}</span>
+                    <div>
+                      <h4>{{ v.title }}</h4>
+                      <p>{{ v.text }}</p>
+                    </div>
+                    <span class="vertical__go">→</span>
+                  </a>
+                }
+              </div>
+            </div>
+          }
         } @else {
           <p class="stat__value">{{ item.display }}</p>
           <p class="stat__label">{{ item.label }}</p>

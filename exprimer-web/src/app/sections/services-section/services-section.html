@@ -5,21 +5,101 @@
     <p class="section-subtitle">{{ data().subtitle }}</p>
   </div>
 
-  <div class="services__strips">
+  <div class="container bento">
+    <div class="bento__glow" aria-hidden="true"></div>
+
     @for (item of data().items; track item.slug) {
-      <a class="strip" [routerLink]="'/' + item.slug" [attr.data-accent]="item.accent">
-        <div class="strip__media" aria-hidden="true">
-          <img [src]="item.imageUrl || fallbackImage($index)" [alt]="''" />
-          <div class="strip__scrim"></div>
-        </div>
-        <div class="strip__content container">
-          <span class="strip__index">0{{ $index + 1 }}</span>
-          <div class="strip__copy">
+      <a
+        [attr.class]="'bento-card bento-card--' + item.accent + ' bento-card--' + item.slug"
+        [routerLink]="'/' + item.slug"
+        [attr.data-accent]="item.accent"
+      >
+        <span class="bento-card__rim" aria-hidden="true"></span>
+
+        @if (item.slug === 'media') {
+          <div class="bento-card__top">
+            <span class="bento-pill bento-pill--live">
+              <i></i>
+              Live catalog
+            </span>
+            <span class="bento-card__index">01</span>
+          </div>
+          <div class="bento-card__visual" aria-hidden="true">
+            <img [src]="item.imageUrl || fallbackImage($index)" [alt]="''" />
+            <div class="bento-card__scrim"></div>
+            <div class="bento-meters">
+              <span style="--w: 78%"></span>
+              <span style="--w: 54%"></span>
+              <span style="--w: 92%"></span>
+            </div>
+          </div>
+          <div class="bento-card__body">
             <h3>{{ item.title }}</h3>
             <p>{{ item.summary }}</p>
+            <div class="bento-card__meta">
+              <span>OTT · VOD · TV</span>
+              <span class="bento-cta">Explore →</span>
+            </div>
           </div>
-          <span class="strip__cta">Explore</span>
-        </div>
+        }
+
+        @if (item.slug === 'recruitment') {
+          <div class="bento-card__top">
+            <span class="bento-pill">Talent desk</span>
+            <span class="bento-card__index">02</span>
+          </div>
+          <div class="bento-card__body bento-card__body--stack">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.summary }}</p>
+            <div class="bento-session">
+              <div class="bento-avatars" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="bento-session__copy">
+                <strong>AI-matched roles</strong>
+                <small>Ready for briefing</small>
+              </div>
+            </div>
+            <span class="bento-btn">Start session</span>
+          </div>
+        }
+
+        @if (item.slug === 'verification') {
+          <div class="bento-card__top">
+            <span class="bento-pill bento-pill--ok">Verified</span>
+            <span class="bento-card__index">03</span>
+          </div>
+          <div class="bento-card__body bento-card__body--stack">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.summary }}</p>
+            <ul class="bento-checks">
+              <li>
+                <span class="bento-checks__icon is-done">✓</span>
+                <div>
+                  <strong>Identity match</strong>
+                  <div class="bento-bar"><i style="--w: 100%"></i></div>
+                </div>
+              </li>
+              <li>
+                <span class="bento-checks__icon is-done">✓</span>
+                <div>
+                  <strong>Employment history</strong>
+                  <div class="bento-bar"><i style="--w: 86%"></i></div>
+                </div>
+              </li>
+              <li>
+                <span class="bento-checks__icon is-run">…</span>
+                <div>
+                  <strong>Global screening</strong>
+                  <div class="bento-bar"><i style="--w: 62%"></i></div>
+                </div>
+              </li>
+            </ul>
+            <span class="bento-cta bento-cta--block">View vertical →</span>
+          </div>
+        }
       </a>
     }
   </div>

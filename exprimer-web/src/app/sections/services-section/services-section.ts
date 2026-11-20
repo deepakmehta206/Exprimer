@@ -18,15 +18,16 @@ export class ServicesSection implements AfterViewInit, OnDestroy {
   private ctx?: gsap.Context;
 
   private onMove = (e: PointerEvent) => {
-    const strip = (e.target as HTMLElement | null)?.closest?.('.strip') as HTMLElement | null;
-    if (!strip) return;
-    const r = strip.getBoundingClientRect();
-    strip.style.setProperty('--mx', `${e.clientX - r.left}px`);
-    strip.style.setProperty('--my', `${e.clientY - r.top}px`);
+    const card = (e.target as HTMLElement | null)?.closest?.('.bento-card') as HTMLElement | null;
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    card.style.setProperty('--my', `${e.clientY - r.top}px`);
   };
 
   ngAfterViewInit(): void {
     const el = this.root.nativeElement;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     el.addEventListener('pointermove', this.onMove, { passive: true });
 
     this.ctx = gsap.context(() => {
@@ -39,15 +40,25 @@ export class ServicesSection implements AfterViewInit, OnDestroy {
         scrollTrigger: { trigger: '.services__intro', start: 'top 80%' },
       });
 
-      gsap.utils.toArray<HTMLElement>('.strip').forEach((strip) => {
-        gsap.from(strip.querySelectorAll('.strip__index, .strip__copy, .strip__cta'), {
-          autoAlpha: 0,
-          y: 40,
-          stagger: 0.08,
-          duration: 0.9,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: strip, start: 'top 78%' },
-        });
+      if (reduce) return;
+
+      gsap.from('.bento-card', {
+        autoAlpha: 0,
+        y: 48,
+        scale: 0.97,
+        stagger: 0.14,
+        duration: 0.95,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.bento', start: 'top 78%' },
+      });
+
+      gsap.from('.bento-meters span::after, .bento-bar i', {
+        scaleX: 0,
+        transformOrigin: 'left center',
+        duration: 1.1,
+        stagger: 0.08,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: '.bento', start: 'top 70%' },
       });
     }, el);
   }

@@ -1,0 +1,68 @@
+---
+description: Use Exprimer bento glass cards for verticals, feature tiles, and interactive service UI
+globs: exprimer-web/**/*.{ts,html,scss,css}
+alwaysApply: false
+---
+
+# Bento glass cards (canonical UI)
+
+For service/vertical/feature tiles, **always** reuse the bento glass card pattern from `services-section` — not flat strips, plain bordered boxes, or generic Material cards.
+
+Reference: `exprimer-web/src/app/sections/services-section/`
+
+## Structure
+
+```html
+<div class="bento">
+  <div class="bento__glow" aria-hidden="true"></div>
+  <a class="bento-card bento-card--{accent}" [routerLink]="...">
+    <span class="bento-card__rim" aria-hidden="true"></span>
+    <div class="bento-card__top">
+      <span class="bento-pill">Status</span>
+      <span class="bento-card__index">01</span>
+    </div>
+    <!-- optional visual / meters / session / checks -->
+    <div class="bento-card__body">
+      <h3>Title</h3>
+      <p>Summary</p>
+      <span class="bento-btn">CTA</span> <!-- or .bento-cta -->
+    </div>
+  </a>
+</div>
+```
+
+## Visual rules
+
+- Glass: dark translucent fill + `backdrop-filter: blur`, thin light border, ~24–28px radius
+- Rim glow via `.bento-card__rim` + accent CSS vars (`--accent`, `--accent-2`, `--glow`)
+- Soft nebula backdrop only behind the grid (`.bento__glow`) — not full-page purple wash
+- Accent map: `media` (violet/pink), `talent` (gold/rose), `trust` (emerald/amber)
+- Micro-UI inside cards: pills, meters/progress, avatars, check rows — keep one purpose per card
+- CTA: gradient pill `.bento-btn` with matching glow, or text `.bento-cta`
+- Type: site fonts (`--font-display` / `--font-body`); titles compact, muted body `#b8b8c8`
+
+## Layout
+
+- Asymmetric bento grid (e.g. one tall span-2 + two stacked); collapse to single column ≤900px
+- Cards are **links/buttons** (interactive) — justified card chrome only when tappable
+- Hover lift + stronger glow; always have tap target ≥44px on coarse pointer
+- Respect `prefers-reduced-motion`
+
+## Do / don’t
+
+```scss
+// ✅
+.bento-card {
+  --accent: #c084fc;
+  --accent-2: #f472b6;
+  --glow: rgba(192, 132, 252, 0.45);
+  border-radius: 28px;
+  background: linear-gradient(165deg, rgba(255,255,255,.07), rgba(255,255,255,.02) 42%), rgba(12,12,16,.72);
+  backdrop-filter: blur(18px);
+}
+
+// ❌ full-bleed image strips, gray Material cards, purple-on-white marketing blocks,
+//    hover-only reveal with no click route, empty decorative cards
+```
+
+When adding new verticals or similar modules, extend this pattern (new accent token + micro-UI) instead of inventing a new card system.
