@@ -174,7 +174,7 @@ public static class CmsSeeder
                         title = "General Checks",
                         items = new[]
                         {
-                            new { title = "Education", text = "Confirms school, college, or university attendance and whether the institution is accredited.", imageUrl = "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Education", text = "Confirms school, college, or university attendance and whether the institution is accredited.", imageUrl = "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=400&q=80" },
                             new { title = "Address Check", text = "Verifies current and past residential addresses via documents, utility bills, or field visits.", imageUrl = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=400&q=80" },
                             new { title = "Employer Check", text = "Validates employment history for the roles claimed in the candidate’s application.", imageUrl = "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80" },
                             new { title = "Global Database", text = "Scans compliance and litigation databases for fraud, sanctions, or criminal watchlists.", imageUrl = "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=400&q=80" },
@@ -221,7 +221,7 @@ public static class CmsSeeder
                         eyebrow = "Operations",
                         title = "Live dashboard",
                         text = "Stay updated on verification progress in real time — with 24×7 support and a dedicated candidate helpline.",
-                        imageUrl = "https://images.unsplash.com/photo-1551281049-9a0b734ef844?auto=format&fit=crop&w=1400&q=80",
+                        imageUrl = "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1400&q=80",
                         logoUrl = "/brand/exprimer-logo.png",
                         bullets = new[] { "Real-time case status", "24×7 Support", "Candidate Helpline" },
                         ctaLabel = "Book free Demo",
@@ -242,20 +242,14 @@ public static class CmsSeeder
                     }
                 }
             }),
-            Section("trusted", 4, new
+            Section("awards", 4, new
             {
-                eyebrow = "Awards & Recognition",
-                title = "Trusted marks of excellence",
+                eyebrow = "Recognition",
+                title = "Awards & Recognition",
                 items = new[]
                 {
-                    new { name = "Exprimer", logoUrl = "/brand/exprimer-logo.png" },
-                    new { name = "ISO Ready", logoUrl = "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=200&q=80" },
-                    new { name = "Global Desk", logoUrl = "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=200&q=80" },
-                    new { name = "Secure Ops", logoUrl = "https://images.unsplash.com/photo-1563986768494-4dee2763ff36?auto=format&fit=crop&w=200&q=80" },
-                    new { name = "HR Tech", logoUrl = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=200&q=80" },
-                    new { name = "Compliance", logoUrl = "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=200&q=80" },
-                    new { name = "Paperless", logoUrl = "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=200&q=80" },
-                    new { name = "API First", logoUrl = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=200&q=80" }
+                    new { name = "ISO", imageUrl = "/awards/iso.jpg", caption = "ISO" },
+                    new { name = "GDPR", imageUrl = "/awards/gdpr.png", caption = "GDPR" }
                 }
             }),
             Section("highlights", 5, new

@@ -1,6 +1,7 @@
 import { Component, input } from '@angular/core';
 import {
   AudiencesData,
+  AwardsData,
   ChecksData,
   CollectionsData,
   CtaData,
@@ -21,6 +22,7 @@ import {
   TrustedData,
 } from '../../core/models/cms.models';
 import { AudiencesSection } from '../audiences-section/audiences-section';
+import { AwardsSection } from '../awards-section/awards-section';
 import { ChecksSection } from '../checks-section/checks-section';
 import { CollectionsSection } from '../collections-section/collections-section';
 import { CtaSection } from '../cta-section/cta-section';
@@ -60,6 +62,7 @@ import { TrustedSection } from '../trusted-section/trusted-section';
     ChecksSection,
     ShowcaseSection,
     FaqSection,
+    AwardsSection,
   ],
   templateUrl: './section-host.html',
 })
@@ -136,5 +139,9 @@ export class SectionHost {
 
   asFaq(data: Record<string, unknown>): FaqData {
     return data as unknown as FaqData;
+  }
+
+  asAwards(data: Record<string, unknown>): AwardsData {
+    return data as unknown as AwardsData;
   }
 }

@@ -165,6 +165,12 @@ export interface TrustedData {
   items: Array<{ name: string; logoUrl?: string }>;
 }
 
+export interface AwardsData {
+  eyebrow: string;
+  title: string;
+  items: Array<{ name: string; imageUrl: string; caption?: string }>;
+}
+
 export interface HighlightsData {
   eyebrow: string;
   title: string;
