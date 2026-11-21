@@ -20,7 +20,14 @@
       <a routerLink="/media" routerLinkActive="is-active" (click)="closeMenu()">Media</a>
       <a routerLink="/recruitment" routerLinkActive="is-active" (click)="closeMenu()">Talent</a>
       <a routerLink="/verification" routerLinkActive="is-active" (click)="closeMenu()">Verify</a>
-      <a class="nav__cta" href="#contact" (click)="closeMenu()">Enquire</a>
+      <a
+        class="nav__cta"
+        routerLink="/home"
+        fragment="contact"
+        (click)="goToFragment($event, 'contact')"
+      >
+        Enquire
+      </a>
     </nav>
   </div>
 </header>

@@ -5,23 +5,26 @@ import {
   OnDestroy,
   ViewChild,
   computed,
+  inject,
   input,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HeroData } from '../../core/models/cms.models';
 import { BeamFieldHandle, createBeamField } from '../../core/utils/beam-field';
+import { parseCtaHref, scrollToAnchor } from '../../core/utils/scroll-to-anchor';
 
 gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-hero-section',
-  imports: [RouterLink],
   templateUrl: './hero-section.html',
   styleUrl: './hero-section.scss',
 })
 export class HeroSection implements AfterViewInit, OnDestroy {
+  private readonly router = inject(Router);
+
   readonly data = input.required<HeroData>();
   readonly brandChars = computed(() => (this.data().brand || 'Exprimer').split(''));
   readonly headlineParts = computed(() => {
@@ -110,7 +113,31 @@ export class HeroSection implements AfterViewInit, OnDestroy {
     this.ctx?.revert();
   }
 
-  isInternal(href: string): boolean {
-    return href.startsWith('/') && !href.startsWith('/#');
+  onCtaClick(event: Event, href: string): void {
+    const target = parseCtaHref(href);
+
+    if (target.kind === 'external') {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (target.kind === 'anchor') {
+      if (!scrollToAnchor(target.fragment)) {
+        void this.router.navigate(['/home'], { fragment: target.fragment });
+      }
+      return;
+    }
+
+    const commands = target.path.split('/').filter(Boolean);
+    void this.router.navigate(['/', ...commands], { fragment: target.fragment }).then(() => {
+      if (target.fragment) {
+        requestAnimationFrame(() => {
+          if (!scrollToAnchor(target.fragment!)) {
+            window.setTimeout(() => scrollToAnchor(target.fragment!), 120);
+          }
+        });
+      }
+    });
   }
 }

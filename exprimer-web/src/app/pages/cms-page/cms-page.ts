@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { CmsPage as CmsPageModel, SiteSettings } from '../../core/models/cms.models';
 import { CmsService } from '../../core/services/cms.service';
+import { scrollToAnchor } from '../../core/utils/scroll-to-anchor';
 import { SiteFooter } from '../../layout/site-footer/site-footer';
 import { SiteHeader } from '../../layout/site-header/site-header';
 import { SectionHost } from '../../sections/section-host/section-host';
@@ -47,7 +48,7 @@ export class CmsPage implements OnInit {
           this.title.setTitle(page.title);
           this.meta.updateTag({ name: 'description', content: page.seoDescription });
           this.loading.set(false);
-          window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+          this.scrollAfterLoad();
         },
         error: () => {
           this.page.set(null);
@@ -55,5 +56,26 @@ export class CmsPage implements OnInit {
           this.error.set('Unable to load page content from CMS API.');
         },
       });
+
+    this.route.fragment.subscribe((fragment) => {
+      if (!fragment || this.loading()) return;
+      this.tryScrollToFragment(fragment);
+    });
+  }
+
+  private scrollAfterLoad(): void {
+    const fragment = this.route.snapshot.fragment;
+    if (fragment) {
+      this.tryScrollToFragment(fragment);
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  }
+
+  private tryScrollToFragment(fragment: string): void {
+    requestAnimationFrame(() => {
+      if (scrollToAnchor(fragment, 'smooth')) return;
+      window.setTimeout(() => scrollToAnchor(fragment, 'smooth'), 160);
+    });
   }
 }

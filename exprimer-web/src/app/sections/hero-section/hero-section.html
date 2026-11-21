@@ -25,16 +25,20 @@
       }
     </h1>
     <div class="hero__actions">
-      @if (isInternal(data().primaryCtaHref)) {
-        <a class="btn btn-primary" [routerLink]="data().primaryCtaHref">{{ data().primaryCta }}</a>
-      } @else {
-        <a class="btn btn-primary" [href]="data().primaryCtaHref">{{ data().primaryCta }}</a>
-      }
-      @if (isInternal(data().secondaryCtaHref)) {
-        <a class="hero__text-link" [routerLink]="data().secondaryCtaHref">{{ data().secondaryCta }}</a>
-      } @else {
-        <a class="hero__text-link" [href]="data().secondaryCtaHref">{{ data().secondaryCta }}</a>
-      }
+      <a
+        class="btn btn-primary"
+        [href]="data().primaryCtaHref || '#services'"
+        (click)="onCtaClick($event, data().primaryCtaHref || '#services')"
+      >
+        {{ data().primaryCta }}
+      </a>
+      <a
+        class="hero__text-link"
+        [href]="data().secondaryCtaHref || '#contact'"
+        (click)="onCtaClick($event, data().secondaryCtaHref || '#contact')"
+      >
+        {{ data().secondaryCta }}
+      </a>
     </div>
   </div>
 

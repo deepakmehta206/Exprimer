@@ -1,6 +1,7 @@
 import { Component, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { SiteSettings } from '../../core/models/cms.models';
+import { scrollToAnchor } from '../../core/utils/scroll-to-anchor';
 
 @Component({
   selector: 'app-site-header',
@@ -18,5 +19,14 @@ export class SiteHeader {
 
   closeMenu(): void {
     this.menuOpen = false;
+  }
+
+  goToFragment(event: Event, id: string): void {
+    this.closeMenu();
+    // Same-page: scroll immediately; cross-page: routerLink + fragment handles nav
+    if (document.getElementById(id)) {
+      event.preventDefault();
+      scrollToAnchor(id);
+    }
   }
 }

@@ -33,9 +33,9 @@ public static class CmsSeeder
                     headline = "Media. Talent. Trust — delivered worldwide.",
                     subheadline = "Content rights, manpower, and verification for ambitious brands.",
                     primaryCta = "Explore verticals",
-                    primaryCtaHref = "#services",
+                    primaryCtaHref = "/home#services",
                     secondaryCta = "Talk to us",
-                    secondaryCtaHref = "#contact",
+                    secondaryCtaHref = "/home#contact",
                     imageUrl = "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=2000&q=80"
                 }),
                 Section("stats", 2, new
