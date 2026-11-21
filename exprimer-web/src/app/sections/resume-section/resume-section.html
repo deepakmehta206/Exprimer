@@ -1,24 +1,18 @@
 <section class="section resume" [attr.id]="data().id || 'resume'" #root>
-  <div class="container resume__layout">
+  <div class="container resume__wrap">
     <div class="resume__glow" aria-hidden="true"></div>
 
-    <article class="resume-card resume-card--copy">
+    <form class="resume-card" [formGroup]="form" (ngSubmit)="submit()">
       <span class="resume-card__rim" aria-hidden="true"></span>
+
       <div class="resume-card__top">
-        <span class="resume-pill">Careers</span>
+        <span class="resume-pill resume-pill--live"><i></i> Careers</span>
         <span class="resume-card__index">CV</span>
       </div>
-      <div class="resume-card__body">
-        <h2 class="section-title">{{ data().title }}</h2>
-        <p class="section-subtitle">{{ data().subtitle }}</p>
-      </div>
-    </article>
 
-    <form class="resume-card resume-card--form" [formGroup]="form" (ngSubmit)="submit()">
-      <span class="resume-card__rim" aria-hidden="true"></span>
-      <div class="resume-card__top">
-        <span class="resume-pill resume-pill--live"><i></i> Open roles</span>
-        <span class="resume-card__index">02</span>
+      <div class="resume-card__intro">
+        <p class="resume-card__lead">{{ data().title }}</p>
+        <p class="resume-card__hint">{{ data().subtitle }}</p>
       </div>
 
       @if (success()) {

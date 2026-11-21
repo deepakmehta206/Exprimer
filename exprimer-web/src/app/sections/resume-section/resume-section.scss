@@ -4,12 +4,10 @@
   overflow: hidden;
 }
 
-.resume__layout {
+.resume__wrap {
   position: relative;
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 1.15rem;
-  align-items: stretch;
+  max-width: 52rem;
+  margin-inline: auto;
 }
 
 .resume__glow {
@@ -32,7 +30,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 1.25rem;
+  padding: 1.45rem 1.5rem 1.5rem;
   border-radius: 28px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background:
@@ -44,19 +42,6 @@
     0 0 40px color-mix(in srgb, var(--glow) 40%, transparent);
   backdrop-filter: blur(18px);
   overflow: visible;
-}
-
-.resume-card--copy {
-  --accent: #60a5fa;
-  --accent-2: #34d399;
-  --glow: rgba(96, 165, 250, 0.38);
-  overflow: hidden;
-}
-
-.resume-card--form {
-  --accent: #34d399;
-  --accent-2: #fbbf24;
-  --glow: rgba(52, 211, 153, 0.38);
 }
 
 .resume-card__rim {
@@ -115,18 +100,33 @@
   animation: resume-pulse 1.6s ease-in-out infinite;
 }
 
-.resume-card__body {
+.resume-card__intro {
   position: relative;
   z-index: 1;
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.resume-card__body .section-title {
-  max-width: 18ch;
-  font-size: clamp(1.65rem, 3.6vw, 2.55rem);
+.resume-card__lead {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.35vw, 1.125rem);
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  color: #e6e6f0;
 }
 
-.resume-card__body .section-subtitle {
-  color: #b8b8c8;
+.resume-card__hint {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: #9a9aab;
 }
 
 .resume-fields {
@@ -135,7 +135,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.85rem;
-  flex: 1;
 }
 
 .resume-field {
@@ -317,16 +316,10 @@
   }
 }
 
-@media (max-width: 900px) {
-  .resume__layout {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 560px) {
   .resume-card {
     border-radius: 22px;
-    padding: 1rem;
+    padding: 1.1rem 1rem 1.15rem;
   }
 
   .resume-fields {
