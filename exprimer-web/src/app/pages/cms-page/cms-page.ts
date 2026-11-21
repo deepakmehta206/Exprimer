@@ -9,11 +9,12 @@ import { SiteFooter } from '../../layout/site-footer/site-footer';
 import { SiteHeader } from '../../layout/site-header/site-header';
 import { SectionHost } from '../../sections/section-host/section-host';
 import { MouseGlow } from '../../shared/mouse-glow/mouse-glow';
+import { ScrollTop } from '../../shared/scroll-top/scroll-top';
 import { WhatsappFab } from '../../shared/whatsapp-fab/whatsapp-fab';
 
 @Component({
   selector: 'app-cms-page',
-  imports: [SiteHeader, SiteFooter, SectionHost, MouseGlow, WhatsappFab],
+  imports: [SiteHeader, SiteFooter, SectionHost, MouseGlow, WhatsappFab, ScrollTop],
   templateUrl: './cms-page.html',
   styleUrl: './cms-page.scss',
 })

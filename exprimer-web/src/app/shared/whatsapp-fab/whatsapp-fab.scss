@@ -7,8 +7,8 @@
   z-index: 60;
   display: grid;
   place-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 3.15rem;
+  height: 3.15rem;
   border-radius: 50%;
   color: #fff;
   background: linear-gradient(145deg, var(--wa), var(--wa-deep));
@@ -37,8 +37,8 @@
 }
 
 .wa-fab__icon {
-  width: 1.65rem;
-  height: 1.65rem;
+  width: 1.35rem;
+  height: 1.35rem;
   display: block;
 }
 
@@ -110,8 +110,8 @@
 
 @media (hover: none), (pointer: coarse) {
   .wa-fab {
-    width: 3.75rem;
-    height: 3.75rem;
+    width: 3.35rem;
+    height: 3.35rem;
   }
 
   .wa-fab__tip {
@@ -121,8 +121,8 @@
 
 @media (min-width: 1600px) {
   .wa-fab {
-    width: 3.85rem;
-    height: 3.85rem;
+    width: 3.4rem;
+    height: 3.4rem;
     right: max(1.5rem, env(safe-area-inset-right));
     bottom: max(1.5rem, env(safe-area-inset-bottom));
   }

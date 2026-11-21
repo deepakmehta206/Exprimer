@@ -1,0 +1,22 @@
+<button
+  type="button"
+  class="scroll-top"
+  [class.scroll-top--bl]="corner() === 'bl'"
+  [class.is-visible]="visible()"
+  [attr.aria-label]="label()"
+  [attr.aria-hidden]="!visible()"
+  [tabIndex]="visible() ? 0 : -1"
+  (click)="scrollUp()"
+>
+  <span class="scroll-top__glow" aria-hidden="true"></span>
+  <svg class="scroll-top__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M6 14.5 12 8.5l6 6"
+    />
+  </svg>
+</button>

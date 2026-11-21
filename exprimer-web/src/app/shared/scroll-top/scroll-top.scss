@@ -1,0 +1,90 @@
+.scroll-top {
+  --accent: #d6b25e;
+  --accent-2: #f59e0b;
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  /* Sit above WhatsApp FAB (matched circle size 3.15rem + gap) */
+  bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.15rem + 0.75rem);
+  z-index: 59;
+  display: grid;
+  place-items: center;
+  width: 3.15rem;
+  height: 3.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  color: #140f08;
+  background: linear-gradient(145deg, var(--accent), var(--accent-2));
+  box-shadow:
+    0 12px 28px rgba(214, 178, 94, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px) scale(0.92);
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    visibility 0.28s,
+    box-shadow 0.28s ease;
+}
+
+.scroll-top--bl {
+  right: auto;
+  left: max(1rem, env(safe-area-inset-left));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+.scroll-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+
+.scroll-top__glow {
+  position: absolute;
+  inset: -5px;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(214, 178, 94, 0.4), transparent 70%);
+  opacity: 0.65;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.scroll-top__icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  display: block;
+}
+
+.scroll-top:hover,
+.scroll-top:focus-visible {
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 34px rgba(214, 178, 94, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.16) inset;
+  outline: none;
+}
+
+@media (pointer: coarse) {
+  .scroll-top {
+    width: 3.35rem;
+    height: 3.35rem;
+    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.35rem + 0.75rem);
+  }
+}
+
+@media (min-width: 1600px) {
+  .scroll-top {
+    width: 3.4rem;
+    height: 3.4rem;
+    bottom: calc(max(1.5rem, env(safe-area-inset-bottom)) + 3.4rem + 0.75rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-top {
+    transition: opacity 0.2s ease, visibility 0.2s;
+  }
+}
