@@ -1,0 +1,19 @@
+<section class="section testimonials" #root>
+  <div class="container testimonials__intro">
+    <p class="eyebrow">{{ data().eyebrow }}</p>
+    <h2 class="section-title">{{ data().title }}</h2>
+  </div>
+
+  <div class="container testimonials__grid">
+    @for (item of data().items; track item.name) {
+      <blockquote class="testimonial-card">
+        <span class="testimonial-card__rim" aria-hidden="true"></span>
+        <p class="testimonial-card__quote">“{{ item.quote }}”</p>
+        <footer>
+          <strong>{{ item.name }}</strong>
+          <span>{{ item.role }}</span>
+        </footer>
+      </blockquote>
+    }
+  </div>
+</section>

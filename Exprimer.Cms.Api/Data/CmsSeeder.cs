@@ -15,6 +15,7 @@ public static class CmsSeeder
     {
         EnsureSiteSettings(db);
         EnsureMediaPage(db);
+        EnsureRecruitmentPage(db);
 
         if (db.Pages.Any(p => p.Slug == "home"))
         {
@@ -120,21 +121,7 @@ public static class CmsSeeder
             ]
         };
 
-        // Media page is managed by EnsureMediaPage()
-        var recruitment = ServicePage(
-            "recruitment",
-            "Manpower Consulting",
-            "Talent pipelines built for velocity.",
-            "AI-assisted sourcing that connects companies with the right people faster.",
-            "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2000&q=80",
-            new[]
-            {
-                "AI-powered candidate sourcing",
-                "Domestic & international hiring",
-                "Role benchmarking & shortlists",
-                "End-to-end recruitment support"
-            });
-
+        // Media + recruitment pages managed by Ensure* helpers
         var verification = ServicePage(
             "verification",
             "Background Verification",
@@ -149,9 +136,132 @@ public static class CmsSeeder
                 "Enterprise account workflows"
             });
 
-        db.Pages.AddRange(home, recruitment, verification);
+        db.Pages.AddRange(home, verification);
         db.SaveChanges();
     }
+
+    private static void EnsureRecruitmentPage(CmsDbContext db)
+    {
+        var existing = db.Pages.Include(p => p.Sections).FirstOrDefault(p => p.Slug == "recruitment");
+        if (existing is not null)
+        {
+            db.PageSections.RemoveRange(existing.Sections);
+            db.Pages.Remove(existing);
+            db.SaveChanges();
+        }
+
+        db.Pages.Add(BuildRecruitmentPage());
+        db.SaveChanges();
+    }
+
+    private static Page BuildRecruitmentPage() => new()
+    {
+        Slug = "recruitment",
+        Title = "Manpower Consulting | Exprimer",
+        SeoDescription = "AI-powered global workforce platform — Non-IT recruitment, executive search, and talent acquisition across India and internationally.",
+        Sections =
+        [
+            Section("hero", 1, new
+            {
+                brand = "Exprimer",
+                eyebrow = "Global Manpower Consulting",
+                headline = "Revolutionizing Recruitment Using AI Technology",
+                subheadline = "Reduce bias, speed up hiring, and find the best candidates — specializing in Non-IT recruitment across India and internationally.",
+                primaryCta = "Book a free demo",
+                primaryCtaHref = "/recruitment#contact",
+                secondaryCta = "See how AI helps",
+                secondaryCtaHref = "/recruitment#process",
+                imageUrl = "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2000&q=80"
+            }),
+            Section("industry-mix", 2, new
+            {
+                eyebrow = "Talent that fits",
+                title = "The right hire, in less time",
+                subtitle = "We specialize in providing the right talent to companies faster — Talent Acquisition, Global Recruitment, and Executive Search.",
+                items = new[]
+                {
+                    new { label = "Manufacturing, Healthcare, FMCG", value = "40%", percent = 40 },
+                    new { label = "Energy, Chemicals, Logistics", value = "35%", percent = 35 },
+                    new { label = "Retail, Hospitality, Education", value = "25%", percent = 25 }
+                }
+            }),
+            Section("highlights", 3, new
+            {
+                eyebrow = "Excellence",
+                title = "Exprimer’s excellence in every hire",
+                subtitle = "AI-assisted sourcing with human judgment where it matters.",
+                items = new[]
+                {
+                    new { title = "AI-Powered Sourcing", text = "Rapidly identify top candidates globally.", accent = "talent" },
+                    new { title = "Unbiased Recruitment", text = "AI supports fair assessment across every shortlist.", accent = "media" },
+                    new { title = "Cost & Time Efficiency", text = "Streamlined hiring that reduces overheads.", accent = "trust" },
+                    new { title = "Tailored Solutions", text = "Custom hiring strategies for mid-to-C level roles.", accent = "talent" }
+                }
+            }),
+            Section("process", 4, new
+            {
+                id = "process",
+                eyebrow = "Optimize time",
+                title = "Screen → Shortlist, simplified",
+                steps = new[]
+                {
+                    new { number = "01", title = "SCREEN", text = "AI-powered screening of 1000+ candidates — skills, experience, and notice period matched instantly." },
+                    new { number = "02", title = "SHORTLIST", text = "AI-managed first interview assessing communication, problem-solving, and job fit with clear insights." },
+                    new { number = "03", title = "PLACE", text = "Human recruiters close the loop with clients for mid-to-C level Non-IT hiring." }
+                }
+            }),
+            Section("stats", 5, new
+            {
+                items = new[]
+                {
+                    new { value = "10+", label = "Years of industry experience" },
+                    new { value = "5K+", label = "Careers made" },
+                    new { value = "40+", label = "Industries covered" },
+                    new { value = "50K+", label = "Online registered jobseekers" }
+                }
+            }),
+            Section("testimonials", 6, new
+            {
+                eyebrow = "Trust",
+                title = "Hear from leaders who trust us",
+                items = new[]
+                {
+                    new { quote = "Exprimer cut our mid-senior hiring cycle dramatically without compromising quality.", name = "Operations Head", role = "Manufacturing · India" },
+                    new { quote = "Their Non-IT desk understands role nuance — shortlists feel interview-ready.", name = "HR Director", role = "Healthcare group" },
+                    new { quote = "AI screening plus recruiter judgment is the balance we needed for scale hiring.", name = "Talent Lead", role = "FMCG · GCC" }
+                }
+            }),
+            Section("roles", 7, new
+            {
+                eyebrow = "Roles we place",
+                title = "AI-driven recruitment excellence",
+                subtitle = "From leadership to specialist Non-IT roles — plus tech searches when you need them.",
+                items = new[]
+                {
+                    new { label = "Sales Head" },
+                    new { label = "Plant Manager" },
+                    new { label = "CFO" },
+                    new { label = "HRBP" },
+                    new { label = "Supply Chain Lead" },
+                    new { label = "Brand Manager" },
+                    new { label = "CTO" },
+                    new { label = "Product Manager" },
+                    new { label = "Data Scientist" },
+                    new { label = "DevOps" },
+                    new { label = "QA Lead" },
+                    new { label = "Full Stack Engineer" }
+                }
+            }),
+            Section("cta", 8, new
+            {
+                id = "contact",
+                title = "Build reliable teams with smart hiring",
+                subtitle = "Tell us your open roles — we respond within a day with a clear hiring plan.",
+                bullets = new[] { "Non-IT hiring expertise", "Mid-to-C level search", "AI-assisted screening" },
+                ctaLabel = "Book a free demo"
+            })
+        ]
+    };
 
     private static void EnsureMediaPage(CmsDbContext db)
     {

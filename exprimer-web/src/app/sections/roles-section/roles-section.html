@@ -1,0 +1,19 @@
+<section class="section roles" #root>
+  <div class="container roles__intro">
+    <p class="eyebrow">{{ data().eyebrow }}</p>
+    <h2 class="section-title">{{ data().title }}</h2>
+    @if (data().subtitle) {
+      <p class="section-subtitle">{{ data().subtitle }}</p>
+    }
+  </div>
+
+  <div class="roles__marquee" [class.is-static]="reduceMotion()">
+    <div class="roles__row">
+      <div class="roles__track">
+        @for (item of loopItems(); track $index + item.label) {
+          <span class="role-chip">{{ item.label }}</span>
+        }
+      </div>
+    </div>
+  </div>
+</section>

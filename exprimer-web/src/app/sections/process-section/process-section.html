@@ -1,4 +1,4 @@
-<section class="section process" #root>
+<section class="section process" [attr.id]="data().id || null" #root>
   <div class="container">
     <p class="eyebrow">{{ data().eyebrow }}</p>
     <h2 class="section-title">{{ data().title }}</h2>

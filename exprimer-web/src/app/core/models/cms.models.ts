@@ -66,6 +66,7 @@ export interface ServicesData {
 }
 
 export interface ProcessData {
+  id?: string;
   eyebrow: string;
   title: string;
   steps: Array<{ number: string; title: string; text: string }>;
@@ -113,4 +114,31 @@ export interface TrustedData {
   eyebrow: string;
   title: string;
   items: Array<{ name: string; logoUrl?: string }>;
+}
+
+export interface HighlightsData {
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+  items: Array<{ title: string; text: string; accent?: string }>;
+}
+
+export interface IndustryMixData {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  items: Array<{ label: string; value: string; percent: number }>;
+}
+
+export interface TestimonialsData {
+  eyebrow: string;
+  title: string;
+  items: Array<{ quote: string; name: string; role: string }>;
+}
+
+export interface RolesData {
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+  items: Array<{ label: string }>;
 }

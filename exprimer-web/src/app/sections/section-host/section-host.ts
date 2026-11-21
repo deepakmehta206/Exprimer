@@ -5,11 +5,15 @@ import {
   CtaData,
   FeatureListData,
   HeroData,
+  HighlightsData,
+  IndustryMixData,
   OfficesData,
   PageSection,
   ProcessData,
+  RolesData,
   ServicesData,
   StatsData,
+  TestimonialsData,
   TrustedData,
 } from '../../core/models/cms.models';
 import { AudiencesSection } from '../audiences-section/audiences-section';
@@ -17,10 +21,14 @@ import { CollectionsSection } from '../collections-section/collections-section';
 import { CtaSection } from '../cta-section/cta-section';
 import { FeatureListSection } from '../feature-list-section/feature-list-section';
 import { HeroSection } from '../hero-section/hero-section';
+import { HighlightsSection } from '../highlights-section/highlights-section';
+import { IndustryMixSection } from '../industry-mix-section/industry-mix-section';
 import { OfficesSection } from '../offices-section/offices-section';
 import { ProcessSection } from '../process-section/process-section';
+import { RolesSection } from '../roles-section/roles-section';
 import { ServicesSection } from '../services-section/services-section';
 import { StatsSection } from '../stats-section/stats-section';
+import { TestimonialsSection } from '../testimonials-section/testimonials-section';
 import { TrustedSection } from '../trusted-section/trusted-section';
 
 @Component({
@@ -36,6 +44,10 @@ import { TrustedSection } from '../trusted-section/trusted-section';
     CollectionsSection,
     AudiencesSection,
     TrustedSection,
+    HighlightsSection,
+    IndustryMixSection,
+    TestimonialsSection,
+    RolesSection,
   ],
   templateUrl: './section-host.html',
 })
@@ -80,5 +92,21 @@ export class SectionHost {
 
   asTrusted(data: Record<string, unknown>): TrustedData {
     return data as unknown as TrustedData;
+  }
+
+  asHighlights(data: Record<string, unknown>): HighlightsData {
+    return data as unknown as HighlightsData;
+  }
+
+  asIndustryMix(data: Record<string, unknown>): IndustryMixData {
+    return data as unknown as IndustryMixData;
+  }
+
+  asTestimonials(data: Record<string, unknown>): TestimonialsData {
+    return data as unknown as TestimonialsData;
+  }
+
+  asRoles(data: Record<string, unknown>): RolesData {
+    return data as unknown as RolesData;
   }
 }

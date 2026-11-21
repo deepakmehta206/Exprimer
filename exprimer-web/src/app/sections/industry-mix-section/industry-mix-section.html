@@ -1,0 +1,25 @@
+<section class="section industry-mix" #root>
+  <div class="container">
+    <article class="industry-mix__panel">
+      <span class="industry-mix__rim" aria-hidden="true"></span>
+      <div class="industry-mix__copy">
+        <p class="eyebrow">{{ data().eyebrow }}</p>
+        <h2 class="section-title">{{ data().title }}</h2>
+        <p class="section-subtitle">{{ data().subtitle }}</p>
+      </div>
+      <ul class="industry-mix__bars">
+        @for (item of data().items; track item.label) {
+          <li class="industry-bar">
+            <div class="industry-bar__head">
+              <strong>{{ item.label }}</strong>
+              <span>{{ item.value }}</span>
+            </div>
+            <div class="industry-bar__track">
+              <i class="industry-bar__fill" [style.--w.%]="item.percent"></i>
+            </div>
+          </li>
+        }
+      </ul>
+    </article>
+  </div>
+</section>

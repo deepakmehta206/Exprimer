@@ -30,5 +30,17 @@
     @case ('trusted') {
       <app-trusted-section [data]="asTrusted(section.data)" />
     }
+    @case ('highlights') {
+      <app-highlights-section [data]="asHighlights(section.data)" />
+    }
+    @case ('industry-mix') {
+      <app-industry-mix-section [data]="asIndustryMix(section.data)" />
+    }
+    @case ('testimonials') {
+      <app-testimonials-section [data]="asTestimonials(section.data)" />
+    }
+    @case ('roles') {
+      <app-roles-section [data]="asRoles(section.data)" />
+    }
   }
 }
