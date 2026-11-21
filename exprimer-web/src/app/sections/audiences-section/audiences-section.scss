@@ -1,0 +1,81 @@
+.audiences__panel {
+  position: relative;
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 42%),
+    rgba(12, 12, 16, 0.72);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 24px 60px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+
+.audiences__glow {
+  position: absolute;
+  inset: -30% auto auto 40%;
+  width: 50%;
+  height: 80%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(192, 132, 252, 0.22), transparent 65%);
+  filter: blur(30px);
+}
+
+.audiences__intro {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 1.35rem;
+}
+
+.audiences__intro .section-title {
+  max-width: 18ch;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+}
+
+.audiences__list {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.audience-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: #e8e8f0;
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s var(--ease-out);
+}
+
+.audience-chip:hover {
+  border-color: rgba(192, 132, 252, 0.45);
+  background: rgba(192, 132, 252, 0.12);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+  .audiences__panel {
+    border-radius: 22px;
+    padding: 1.1rem;
+  }
+
+  .audience-chip {
+    width: 100%;
+    justify-content: center;
+  }
+}

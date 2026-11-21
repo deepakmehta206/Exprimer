@@ -21,5 +21,14 @@
     @case ('feature-list') {
       <app-feature-list-section [data]="asFeatures(section.data)" />
     }
+    @case ('collections') {
+      <app-collections-section [data]="asCollections(section.data)" />
+    }
+    @case ('audiences') {
+      <app-audiences-section [data]="asAudiences(section.data)" />
+    }
+    @case ('trusted') {
+      <app-trusted-section [data]="asTrusted(section.data)" />
+    }
   }
 }

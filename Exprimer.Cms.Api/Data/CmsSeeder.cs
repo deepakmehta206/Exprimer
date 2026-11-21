@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Exprimer.Cms.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Exprimer.Cms.Api.Data;
 
@@ -13,8 +14,9 @@ public static class CmsSeeder
     public static void Seed(CmsDbContext db)
     {
         EnsureSiteSettings(db);
+        EnsureMediaPage(db);
 
-        if (db.Pages.Any())
+        if (db.Pages.Any(p => p.Slug == "home"))
         {
             return;
         }
@@ -118,20 +120,7 @@ public static class CmsSeeder
             ]
         };
 
-        var media = ServicePage(
-            "media",
-            "Media Distribution",
-            "Rights that travel. Screens that stay lit.",
-            "Premium OTT, VOD, and TV distribution across international markets.",
-            "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?auto=format&fit=crop&w=2000&q=80",
-            new[]
-            {
-                "OTT & VOD rights packaging",
-                "Games & entertainment catalogues",
-                "Partner onboarding & territory mapping",
-                "Ongoing content operations support"
-            });
-
+        // Media page is managed by EnsureMediaPage()
         var recruitment = ServicePage(
             "recruitment",
             "Manpower Consulting",
@@ -160,9 +149,118 @@ public static class CmsSeeder
                 "Enterprise account workflows"
             });
 
-        db.Pages.AddRange(home, media, recruitment, verification);
+        db.Pages.AddRange(home, recruitment, verification);
         db.SaveChanges();
     }
+
+    private static void EnsureMediaPage(CmsDbContext db)
+    {
+        var existing = db.Pages.Include(p => p.Sections).FirstOrDefault(p => p.Slug == "media");
+        if (existing is not null)
+        {
+            db.PageSections.RemoveRange(existing.Sections);
+            db.Pages.Remove(existing);
+            db.SaveChanges();
+        }
+
+        db.Pages.Add(BuildMediaPage());
+        db.SaveChanges();
+    }
+
+    private static Page BuildMediaPage() => new()
+    {
+        Slug = "media",
+        Title = "Digital Content | Exprimer",
+        SeoDescription = "Tailored libraries for regional and global digital video services — OTT, VOD, and premium catalogues across 70+ languages.",
+        Sections =
+        [
+            Section("hero", 1, new
+            {
+                brand = "Exprimer",
+                eyebrow = "Digital Content Provider",
+                headline = "Tailored Libraries for Regional and Global Digital Video Services",
+                subheadline = "We specialize in geo-targeted, language-specific and platform-tailored premium video content.",
+                primaryCta = "Explore library",
+                primaryCtaHref = "/media#collections",
+                secondaryCta = "Connect with us",
+                secondaryCtaHref = "/media#contact",
+                imageUrl = "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?auto=format&fit=crop&w=2000&q=80"
+            }),
+            Section("collections", 2, new
+            {
+                id = "collections",
+                eyebrow = "Trending Collections",
+                title = "Within 72 hours · 70+ languages",
+                subtitle = "Premium catalogues packaged for OTT, VOD, apps, and regional platforms.",
+                items = new[]
+                {
+                    new { title = "Animation", hours = "53 hrs 00 mins", titles = "27 Titles", accent = "media" },
+                    new { title = "Cartoon", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "talent" },
+                    new { title = "Cooking", hours = "38 hrs 00 mins", titles = "20 Titles", accent = "trust" },
+                    new { title = "Cricket", hours = "165 hrs 40 mins", titles = "96 Titles", accent = "media" },
+                    new { title = "Fight", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "talent" },
+                    new { title = "Finance", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "trust" },
+                    new { title = "Horror", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "media" },
+                    new { title = "K Drama", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "talent" },
+                    new { title = "Plane crash", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "trust" },
+                    new { title = "Podcast", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "media" },
+                    new { title = "Romance", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "talent" },
+                    new { title = "Science", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "trust" },
+                    new { title = "Serial Killer", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "media" },
+                    new { title = "Sports", hours = "42 hrs 50 mins", titles = "30 Titles", accent = "talent" }
+                }
+            }),
+            Section("stats", 3, new
+            {
+                items = new[]
+                {
+                    new { value = "80+", label = "Serving countries" },
+                    new { value = "500+", label = "On-board content creators" },
+                    new { value = "100+", label = "Merchants" },
+                    new { value = "50+", label = "Digital platforms" }
+                }
+            }),
+            Section("audiences", 4, new
+            {
+                eyebrow = "Who we serve",
+                title = "We provide video content services for",
+                items = new[]
+                {
+                    new { text = "OTT media services" },
+                    new { text = "Website or game portals" },
+                    new { text = "OTT offering teams" },
+                    new { text = "App owners" },
+                    new { text = "Premium quality video seekers" }
+                }
+            }),
+            Section("trusted", 5, new
+            {
+                eyebrow = "Trusted by",
+                title = "100+ companies",
+                items = new[]
+                {
+                    new { name = "Cheddar" },
+                    new { name = "OTT Desk" },
+                    new { name = "Studio Hub" },
+                    new { name = "Stream Co" },
+                    new { name = "Global Play" },
+                    new { name = "RightCast" },
+                    new { name = "VOD Lab" },
+                    new { name = "Screenly" },
+                    new { name = "MediaForge" },
+                    new { name = "Pulse TV" }
+                }
+            }),
+            Section("cta", 6, new
+            {
+                id = "contact",
+                title = "Take your business to the next level with Exprimer",
+                subtitle = "Tell us your catalogue or distribution need — we connect within a day.",
+                bullets = new[] { "Self-serve FAQs", "Catalogue walkthroughs", "Clear commercial SLAs" },
+                ctaLabel = "Contact sales"
+            })
+        ]
+    };
 
     private static Page ServicePage(
         string slug,

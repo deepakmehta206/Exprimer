@@ -10,20 +10,33 @@
 
   <div class="container hero__content">
     <p class="hero__eyebrow">{{ data().eyebrow }}</p>
+
     <p class="hero__brand" [attr.aria-label]="data().brand">
       @for (ch of brandChars(); track $index) {
-        <span class="hero__char">{{ ch === ' ' ? '\u00A0' : ch }}</span>
+        <span class="hero__char" [attr.data-i]="$index">{{ ch === ' ' ? '\u00A0' : ch }}</span>
       }
     </p>
-    <h1 class="hero__headline">
-      @for (part of headlineParts(); track $index) {
-        @if (part.accent) {
-          <span class="t-spectrum">{{ part.text }}</span>
-        } @else {
-          <span>{{ part.text }}</span>
+
+    @if (data().headline) {
+      <h1 class="hero__headline" [attr.aria-label]="data().headline">
+        @for (word of headlineWords(); track $index) {
+          <span class="hero__word">
+            @for (ch of word.chars; track $index) {
+              <span class="hero__word-char">{{ ch === ' ' ? '\u00A0' : ch }}</span>
+            }
+          </span>
         }
-      }
-    </h1>
+      </h1>
+    }
+
+    @if (data().subheadline) {
+      <p class="hero__tagline" [attr.aria-label]="data().subheadline">
+        @for (word of taglineWords(); track $index) {
+          <span class="hero__tag-word">{{ word }}</span>
+        }
+      </p>
+    }
+
     <div class="hero__actions">
       <a
         class="btn btn-primary"

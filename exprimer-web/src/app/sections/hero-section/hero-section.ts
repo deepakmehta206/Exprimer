@@ -26,18 +26,22 @@ export class HeroSection implements AfterViewInit, OnDestroy {
   private readonly router = inject(Router);
 
   readonly data = input.required<HeroData>();
+
   readonly brandChars = computed(() => (this.data().brand || 'Exprimer').split(''));
-  readonly headlineParts = computed(() => {
-    const text = this.data().headline || '';
-    const parts = text.split(/(—|-)/);
-    if (parts.length < 3) {
-      return [{ text, accent: false }];
-    }
-    const dash = parts[1];
-    return [
-      { text: parts[0] + dash, accent: false },
-      { text: parts.slice(2).join(''), accent: true },
-    ];
+
+  /** Headline split into words, each word into chars for assemble. */
+  readonly headlineWords = computed(() => {
+    const text = (this.data().headline || '').trim();
+    if (!text) return [] as Array<{ chars: string[] }>;
+    return text.split(/(\s+)/).map((token) => ({
+      chars: token.split(''),
+    }));
+  });
+
+  readonly taglineWords = computed(() => {
+    const text = (this.data().subheadline || '').trim();
+    if (!text) return [] as string[];
+    return text.split(/\s+/).filter(Boolean);
   });
 
   @ViewChild('root', { static: true }) root!: ElementRef<HTMLElement>;
@@ -69,21 +73,93 @@ export class HeroSection implements AfterViewInit, OnDestroy {
     this.ctx = gsap.context(() => {
       mm.add('(prefers-reduced-motion: reduce)', () => {
         gsap.set(
-          ['.hero__brand', '.hero__eyebrow', '.hero__headline', '.hero__actions', '.hero__visual', '.hero__scroll'],
-          { clearProps: 'all', autoAlpha: 1, y: 0, scale: 1 }
+          [
+            '.hero__brand',
+            '.hero__eyebrow',
+            '.hero__headline',
+            '.hero__tagline',
+            '.hero__actions',
+            '.hero__visual',
+            '.hero__scroll',
+            '.hero__char',
+            '.hero__word-char',
+            '.hero__tag-word',
+          ],
+          { clearProps: 'all', autoAlpha: 1, y: 0, x: 0, scale: 1, rotate: 0 }
         );
       });
 
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         gsap.set('.hero__visual', { scale: 1.1 });
+        gsap.set('.hero__char', {
+          autoAlpha: 0,
+          y: () => gsap.utils.random(48, 110),
+          x: () => gsap.utils.random(-36, 36),
+          rotate: () => gsap.utils.random(-18, 18),
+          scale: () => gsap.utils.random(0.55, 0.85),
+        });
+        gsap.set('.hero__word-char', { autoAlpha: 0, y: 28, scale: 0.9 });
+        gsap.set('.hero__tag-word', { autoAlpha: 0, y: 18 });
+        gsap.set(['.hero__eyebrow', '.hero__actions > *', '.hero__scroll'], { autoAlpha: 0, y: 16 });
+
         const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-        tl.from('.hero__scrim', { autoAlpha: 0, duration: 1 })
-          .to('.hero__visual', { scale: 1, duration: 2.2, ease: 'power2.out' }, 0)
-          .from('.hero__char', { yPercent: 120, autoAlpha: 0, stagger: 0.04, duration: 0.9 }, 0.2)
-          .from('.hero__eyebrow', { autoAlpha: 0, y: 14, duration: 0.55 }, 0.5)
-          .from('.hero__headline', { autoAlpha: 0, y: 24, duration: 0.8 }, 0.65)
-          .from('.hero__actions > *', { autoAlpha: 0, y: 16, stagger: 0.1, duration: 0.5 }, 0.9)
-          .from('.hero__scroll', { autoAlpha: 0, duration: 0.5 }, 1.1);
+
+        tl.from('.hero__scrim', { autoAlpha: 0, duration: 1 }, 0)
+          .to('.hero__visual', { scale: 1, duration: 2.4, ease: 'power2.out' }, 0)
+          .to('.hero__eyebrow', { autoAlpha: 1, y: 0, duration: 0.55 }, 0.15)
+          // Brand letters assemble into "Exprimer"
+          .to(
+            '.hero__char',
+            {
+              autoAlpha: 1,
+              y: 0,
+              x: 0,
+              rotate: 0,
+              scale: 1,
+              duration: 0.85,
+              stagger: { each: 0.055, from: 'start' },
+              ease: 'back.out(1.55)',
+            },
+            0.35
+          )
+          // Soft glow settle on brand
+          .fromTo(
+            '.hero__brand',
+            { filter: 'drop-shadow(0 0 0 rgba(214,178,94,0))' },
+            {
+              filter: 'drop-shadow(0 0 22px rgba(214,178,94,0.35))',
+              duration: 0.6,
+              yoyo: true,
+              repeat: 1,
+            },
+            '-=0.35'
+          )
+          // Headline / tagline assemble letter → word
+          .to(
+            '.hero__word-char',
+            {
+              autoAlpha: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.45,
+              stagger: 0.018,
+              ease: 'power2.out',
+            },
+            '-=0.35'
+          )
+          .to(
+            '.hero__tag-word',
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.5,
+              stagger: 0.06,
+              ease: 'power2.out',
+            },
+            '-=0.2'
+          )
+          .to('.hero__actions > *', { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.1 }, '-=0.1')
+          .to('.hero__scroll', { autoAlpha: 1, y: 0, duration: 0.45 }, '-=0.2');
 
         gsap.to('.hero__visual', {
           yPercent: 10,

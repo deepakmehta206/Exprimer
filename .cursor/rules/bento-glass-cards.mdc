@@ -67,6 +67,8 @@ Reference: `exprimer-web/src/app/sections/services-section/`
 
 When adding new verticals or similar modules, extend this pattern (new accent token + micro-UI) instead of inventing a new card system.
 
+`/media` uses home2-style **collections** cards (`collections-section`) with the same glass/rim/glow language.
+
 ## Forms & selects
 
 - Enquiry/contact forms use the same glass card chrome (`cta-section`).

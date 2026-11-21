@@ -88,3 +88,29 @@ export interface FeatureListData {
   title: string;
   items: Array<{ text: string }>;
 }
+
+export interface CollectionsData {
+  id?: string;
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  items: Array<{
+    title: string;
+    hours: string;
+    titles: string;
+    accent?: string;
+    imageUrl?: string;
+  }>;
+}
+
+export interface AudiencesData {
+  eyebrow: string;
+  title: string;
+  items: Array<{ text: string }>;
+}
+
+export interface TrustedData {
+  eyebrow: string;
+  title: string;
+  items: Array<{ name: string }>;
+}
