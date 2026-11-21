@@ -1,19 +1,25 @@
 .collections {
   position: relative;
   overflow: visible;
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
-.collections__pin {
-  position: relative;
+.collections.is-pin-scroll {
+  /* Keep section padding from clipping pinned rail shadows */
+  padding-bottom: clamp(3rem, 6vw, 5rem);
 }
 
 .collections__intro {
-  margin-bottom: clamp(1.25rem, 3vw, 2rem);
-  padding-top: 0.5rem;
+  margin-bottom: clamp(1rem, 2.5vw, 1.6rem);
+}
+
+.collections__intro .section-title {
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  max-width: 16ch;
 }
 
 .collections__hint {
-  margin: 0.85rem 0 0;
+  margin: 0.75rem 0 0;
   color: #8b8b9a;
   font-size: 0.78rem;
   letter-spacing: 0.08em;
@@ -21,11 +27,20 @@
   font-weight: 600;
 }
 
+.collections__rail {
+  position: relative;
+  /* Extra room so card bottoms / shadows aren't clipped while pinned */
+  padding-block: 0.75rem 2.25rem;
+}
+
 .collections__viewport {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
   width: 100%;
+  /* Clip only horizontally; leave vertical room for shadows */
+  overflow-x: clip;
+  overflow-y: visible;
+  padding-bottom: 1.5rem;
 }
 
 .collections__glow {
@@ -43,10 +58,11 @@
 
 .collections__track {
   display: flex;
+  align-items: stretch;
   gap: 1rem;
   width: max-content;
   max-width: none;
-  padding-block: 0.35rem 1.1rem;
+  padding-block: 0.5rem 1.75rem;
   padding-inline: max(1.25rem, calc((100vw - var(--container, 1200px)) / 2 + 1.25rem));
   will-change: transform;
 }
@@ -54,6 +70,7 @@
 /* Mobile / reduced-motion: native sideways swipe */
 .collections.is-native-scroll .collections__viewport {
   overflow: visible;
+  padding-bottom: 0.5rem;
 }
 
 .collections.is-native-scroll .collections__track {
@@ -67,6 +84,7 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(214, 178, 94, 0.45) transparent;
   will-change: auto;
+  padding-bottom: 1.25rem;
 }
 
 .collections.is-native-scroll .collections__track::-webkit-scrollbar {
@@ -89,9 +107,10 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  flex: 0 0 min(78vw, 280px);
-  width: min(78vw, 280px);
-  min-height: 300px;
+  flex: 0 0 min(78vw, 260px);
+  width: min(78vw, 260px);
+  min-height: 270px;
+  max-height: min(52vh, 320px);
   padding: 1rem;
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -100,8 +119,8 @@
     rgba(12, 12, 16, 0.72);
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.04) inset,
-    0 20px 48px rgba(0, 0, 0, 0.4),
-    0 0 32px color-mix(in srgb, var(--glow) 35%, transparent);
+    0 18px 40px rgba(0, 0, 0, 0.4),
+    0 0 28px color-mix(in srgb, var(--glow) 35%, transparent);
   backdrop-filter: blur(16px);
   overflow: hidden;
   transition:
@@ -130,12 +149,12 @@
 
 .collection-card:hover,
 .collection-card:focus-within {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   border-color: color-mix(in srgb, var(--accent) 45%, rgba(255, 255, 255, 0.15));
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent) inset,
-    0 26px 60px rgba(0, 0, 0, 0.5),
-    0 0 48px color-mix(in srgb, var(--glow) 65%, transparent);
+    0 22px 48px rgba(0, 0, 0, 0.48),
+    0 0 40px color-mix(in srgb, var(--glow) 60%, transparent);
 }
 
 .collection-card__rim {
@@ -215,13 +234,13 @@
 }
 
 .collection-card__body {
-  margin-top: 4.5rem;
+  margin-top: 3.5rem;
 }
 
 .collection-card__body h3 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  font-size: clamp(1.25rem, 1.8vw, 1.55rem);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
@@ -229,18 +248,18 @@
 .collection-card__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem 1rem;
-  margin-top: 0.65rem;
+  gap: 0.45rem 0.85rem;
+  margin-top: 0.55rem;
   color: #b8b8c8;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
 .collection-card__cta {
   display: inline-flex;
   align-items: center;
-  min-height: 2.5rem;
-  margin-top: 0.85rem;
+  min-height: 2.4rem;
+  margin-top: 0.65rem;
   color: #fff;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -248,28 +267,30 @@
 
 @media (min-width: 900px) {
   .collection-card {
-    flex-basis: 300px;
-    width: 300px;
-    min-height: 320px;
+    flex-basis: 280px;
+    width: 280px;
+    min-height: 290px;
+    max-height: min(48vh, 340px);
   }
 }
 
 @media (min-width: 1600px) {
   .collections__track {
-    gap: 1.2rem;
+    gap: 1.15rem;
   }
 
   .collection-card {
-    flex-basis: 320px;
-    width: 320px;
-    min-height: 340px;
+    flex-basis: 300px;
+    width: 300px;
+    min-height: 310px;
   }
 }
 
 @media (max-width: 480px) {
   .collection-card {
     border-radius: 20px;
-    min-height: 260px;
+    min-height: 240px;
+    max-height: none;
   }
 }
 

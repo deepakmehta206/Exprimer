@@ -24,6 +24,7 @@ export class CollectionsSection implements AfterViewInit, OnDestroy {
   readonly scrollHint = signal('Scroll to browse the library');
 
   @ViewChild('root', { static: true }) root!: ElementRef<HTMLElement>;
+  @ViewChild('rail', { static: true }) rail!: ElementRef<HTMLElement>;
   @ViewChild('track', { static: true }) track!: ElementRef<HTMLElement>;
 
   private ctx?: gsap.Context;
@@ -31,6 +32,7 @@ export class CollectionsSection implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     const el = this.root.nativeElement;
+    const railEl = this.rail.nativeElement;
     const trackEl = this.track.nativeElement;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const nativeOnly = reduce || matchMedia('(max-width: 700px)').matches;
@@ -60,12 +62,12 @@ export class CollectionsSection implements AfterViewInit, OnDestroy {
 
       gsap.from('.collection-card', {
         autoAlpha: 0,
-        y: 36,
+        y: 28,
         scale: 0.97,
         stagger: 0.05,
         duration: 0.65,
         ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 78%' },
+        scrollTrigger: { trigger: railEl, start: 'top 82%' },
       });
 
       if (nativeOnly) return;
@@ -75,13 +77,14 @@ export class CollectionsSection implements AfterViewInit, OnDestroy {
         return Math.max(0, trackEl.scrollWidth - visible);
       };
 
+      // Pin only the card rail so intro stays above and cards fit fully on screen
       gsap.to(trackEl, {
         x: () => -getScrollDistance(),
         ease: 'none',
         scrollTrigger: {
-          trigger: el,
-          start: 'top top',
-          end: () => `+=${Math.max(getScrollDistance(), window.innerHeight * 0.75)}`,
+          trigger: railEl,
+          start: 'top 18%',
+          end: () => `+=${Math.max(getScrollDistance(), window.innerHeight * 0.7)}`,
           pin: true,
           scrub: 0.65,
           anticipatePin: 1,
@@ -90,7 +93,6 @@ export class CollectionsSection implements AfterViewInit, OnDestroy {
       });
     }, el);
 
-    // Images / fonts can change width — refresh after layout settles
     requestAnimationFrame(() => ScrollTrigger.refresh());
     window.setTimeout(() => ScrollTrigger.refresh(), 400);
   }
