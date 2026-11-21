@@ -112,5 +112,5 @@ export interface AudiencesData {
 export interface TrustedData {
   eyebrow: string;
   title: string;
-  items: Array<{ name: string }>;
+  items: Array<{ name: string; logoUrl?: string }>;
 }

@@ -248,7 +248,11 @@ public static class CmsSeeder
                     new { name = "VOD Lab" },
                     new { name = "Screenly" },
                     new { name = "MediaForge" },
-                    new { name = "Pulse TV" }
+                    new { name = "Pulse TV" },
+                    new { name = "NovaCast" },
+                    new { name = "ReelWorks" },
+                    new { name = "SkyFrame" },
+                    new { name = "Orbit Media" }
                 }
             }),
             Section("cta", 6, new

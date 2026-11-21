@@ -95,6 +95,7 @@ export class CollectionsSection implements AfterViewInit, OnDestroy {
 
     requestAnimationFrame(() => ScrollTrigger.refresh());
     window.setTimeout(() => ScrollTrigger.refresh(), 400);
+    window.setTimeout(() => ScrollTrigger.refresh(), 900);
   }
 
   ngOnDestroy(): void {
