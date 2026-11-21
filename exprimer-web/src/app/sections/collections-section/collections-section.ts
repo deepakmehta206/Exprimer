@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, input } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+  input,
+  signal,
+} from '@angular/core';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CollectionsData } from '../../core/models/cms.models';
@@ -13,16 +21,29 @@ gsap.registerPlugin(ScrollTrigger);
 })
 export class CollectionsSection implements AfterViewInit, OnDestroy {
   readonly data = input.required<CollectionsData>();
-  @ViewChild('root', { static: true }) root!: ElementRef<HTMLElement>;
-  private ctx?: gsap.Context;
+  readonly scrollHint = signal('Scroll to browse the library');
 
+  @ViewChild('root', { static: true }) root!: ElementRef<HTMLElement>;
+  @ViewChild('track', { static: true }) track!: ElementRef<HTMLElement>;
+
+  private ctx?: gsap.Context;
   private readonly accents = ['media', 'talent', 'trust', 'media', 'talent', 'trust'];
 
   ngAfterViewInit(): void {
     const el = this.root.nativeElement;
+    const trackEl = this.track.nativeElement;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const nativeOnly = reduce || matchMedia('(max-width: 700px)').matches;
+
+    if (nativeOnly) {
+      el.classList.add('is-native-scroll');
+      this.scrollHint.set('Swipe sideways to browse the library');
+    } else {
+      el.classList.add('is-pin-scroll');
+      this.scrollHint.set('Keep scrolling — vertical becomes horizontal here');
+    }
+
     this.ctx = gsap.context(() => {
-      if (reduce) return;
       gsap.from('.collections__intro > *', {
         autoAlpha: 0,
         y: 28,
@@ -31,16 +52,47 @@ export class CollectionsSection implements AfterViewInit, OnDestroy {
         ease: 'power3.out',
         scrollTrigger: { trigger: '.collections__intro', start: 'top 82%' },
       });
+
+      if (reduce) {
+        gsap.set('.collection-card', { clearProps: 'all', autoAlpha: 1 });
+        return;
+      }
+
       gsap.from('.collection-card', {
         autoAlpha: 0,
         y: 36,
         scale: 0.97,
-        stagger: 0.06,
-        duration: 0.7,
+        stagger: 0.05,
+        duration: 0.65,
         ease: 'power3.out',
-        scrollTrigger: { trigger: '.collections__grid', start: 'top 80%' },
+        scrollTrigger: { trigger: el, start: 'top 78%' },
+      });
+
+      if (nativeOnly) return;
+
+      const getScrollDistance = () => {
+        const visible = trackEl.parentElement?.clientWidth ?? window.innerWidth;
+        return Math.max(0, trackEl.scrollWidth - visible);
+      };
+
+      gsap.to(trackEl, {
+        x: () => -getScrollDistance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top top',
+          end: () => `+=${Math.max(getScrollDistance(), window.innerHeight * 0.75)}`,
+          pin: true,
+          scrub: 0.65,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
       });
     }, el);
+
+    // Images / fonts can change width — refresh after layout settles
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+    window.setTimeout(() => ScrollTrigger.refresh(), 400);
   }
 
   ngOnDestroy(): void {

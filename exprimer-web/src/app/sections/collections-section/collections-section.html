@@ -1,32 +1,37 @@
 <section class="section collections" [attr.id]="data().id || 'collections'" #root>
-  <div class="container collections__intro">
-    <p class="eyebrow">{{ data().eyebrow }}</p>
-    <h2 class="section-title">{{ data().title }}</h2>
-    <p class="section-subtitle">{{ data().subtitle }}</p>
-  </div>
+  <div class="collections__pin">
+    <div class="container collections__intro">
+      <p class="eyebrow">{{ data().eyebrow }}</p>
+      <h2 class="section-title">{{ data().title }}</h2>
+      <p class="section-subtitle">{{ data().subtitle }}</p>
+      <p class="collections__hint">{{ scrollHint() }}</p>
+    </div>
 
-  <div class="container collections__grid">
-    <div class="collections__glow" aria-hidden="true"></div>
-    @for (item of data().items; track item.title; let i = $index) {
-      <article [attr.class]="'collection-card collection-card--' + (item.accent || accentFor(i))">
-        <span class="collection-card__rim" aria-hidden="true"></span>
-        <div class="collection-card__media" aria-hidden="true">
-          <img [src]="item.imageUrl || fallbackImage(i)" [alt]="''" />
-          <div class="collection-card__scrim"></div>
-        </div>
-        <div class="collection-card__top">
-          <span class="collection-pill">Library</span>
-          <span class="collection-card__index">{{ (i + 1).toString().padStart(2, '0') }}</span>
-        </div>
-        <div class="collection-card__body">
-          <h3>{{ item.title }}</h3>
-          <div class="collection-card__meta">
-            <span>{{ item.hours }}</span>
-            <span>{{ item.titles }}</span>
-          </div>
-          <a class="collection-card__cta" href="#contact" (click)="goContact($event)">More →</a>
-        </div>
-      </article>
-    }
+    <div class="collections__viewport">
+      <div class="collections__glow" aria-hidden="true"></div>
+      <div class="collections__track" #track aria-label="Content library">
+        @for (item of data().items; track item.title; let i = $index) {
+          <article [attr.class]="'collection-card collection-card--' + (item.accent || accentFor(i))">
+            <span class="collection-card__rim" aria-hidden="true"></span>
+            <div class="collection-card__media" aria-hidden="true">
+              <img [src]="item.imageUrl || fallbackImage(i)" [alt]="''" />
+              <div class="collection-card__scrim"></div>
+            </div>
+            <div class="collection-card__top">
+              <span class="collection-pill">Library</span>
+              <span class="collection-card__index">{{ (i + 1).toString().padStart(2, '0') }}</span>
+            </div>
+            <div class="collection-card__body">
+              <h3>{{ item.title }}</h3>
+              <div class="collection-card__meta">
+                <span>{{ item.hours }}</span>
+                <span>{{ item.titles }}</span>
+              </div>
+              <a class="collection-card__cta" href="#contact" (click)="goContact($event)">More →</a>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
   </div>
 </section>
