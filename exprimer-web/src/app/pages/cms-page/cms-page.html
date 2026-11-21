@@ -7,7 +7,7 @@
   } @else if (error()) {
     <div class="state container state--error">
       <p>{{ error() }}</p>
-      <p>Start the CMS API on <code>http://localhost:5117</code> and refresh.</p>
+      <p>Could not reach the CMS API. Check that the API is running and refresh.</p>
     </div>
   } @else if (page(); as current) {
     <app-section-host [sections]="current.sections" />

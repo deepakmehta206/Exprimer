@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { CmsPage, LeadEnquiry, ResumeSubmissionPayload, SiteSettings } from '../models/cms.models';
 
 @Injectable({ providedIn: 'root' })
 export class CmsService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:5117/api';
+  private readonly apiUrl = environment.apiUrl;
 
   getSettings(): Observable<SiteSettings> {
     return this.http.get<SiteSettings>(`${this.apiUrl}/settings`);

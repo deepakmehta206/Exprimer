@@ -13,7 +13,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Frontend", policy =>
         policy.WithOrigins(
                 "http://localhost:4200",
-                "https://localhost:4200")
+                "https://localhost:4200",
+                "https://exprimer.in",
+                "https://www.exprimer.in",
+                "http://deepakmehta206-001-site25.jtempurl.com",
+                "https://deepakmehta206-001-site25.jtempurl.com")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
@@ -32,7 +36,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseCors("Frontend");
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();

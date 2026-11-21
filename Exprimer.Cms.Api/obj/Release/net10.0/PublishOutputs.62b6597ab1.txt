@@ -1,0 +1,12 @@
+D:\MyProjects\Angular\manish\publish\api\Exprimer.Cms.Api.exe
+D:\MyProjects\Angular\manish\publish\api\appsettings.Development.json
+D:\MyProjects\Angular\manish\publish\api\appsettings.json
+D:\MyProjects\Angular\manish\publish\api\Exprimer.Cms.Api.dll
+D:\MyProjects\Angular\manish\publish\api\Exprimer.Cms.Api.deps.json
+D:\MyProjects\Angular\manish\publish\api\Exprimer.Cms.Api.runtimeconfig.json
+D:\MyProjects\Angular\manish\publish\api\Exprimer.Cms.Api.pdb
+D:\MyProjects\Angular\manish\publish\api\Microsoft.AspNetCore.OpenApi.dll
+D:\MyProjects\Angular\manish\publish\api\Microsoft.EntityFrameworkCore.dll
+D:\MyProjects\Angular\manish\publish\api\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\MyProjects\Angular\manish\publish\api\Microsoft.EntityFrameworkCore.InMemory.dll
+D:\MyProjects\Angular\manish\publish\api\Microsoft.OpenApi.dll
