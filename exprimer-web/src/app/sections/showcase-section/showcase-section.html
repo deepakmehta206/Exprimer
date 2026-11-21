@@ -1,0 +1,40 @@
+<section class="section showcase" [attr.id]="data().id || null" #root>
+  <div class="container showcase__stack">
+    @for (item of data().items; track item.title; let i = $index) {
+      <article class="showcase-panel" [class.showcase-panel--reverse]="item.reverse || i % 2 === 1">
+        <div class="showcase-panel__media">
+          <img [src]="item.imageUrl" [alt]="item.title" loading="lazy" />
+          @if (item.logoUrl) {
+            <img class="showcase-panel__logo" [src]="item.logoUrl" alt="Exprimer" loading="lazy" />
+          }
+        </div>
+        <div class="showcase-panel__copy">
+          @if (item.eyebrow) {
+            <p class="eyebrow">{{ item.eyebrow }}</p>
+          }
+          <h2 class="section-title">{{ item.title }}</h2>
+          <p class="section-subtitle">{{ item.text }}</p>
+          @if (item.bullets?.length) {
+            <ul class="showcase-panel__bullets">
+              @for (bullet of item.bullets!; track bullet) {
+                <li>
+                  <span>✓</span>
+                  <span>{{ bullet }}</span>
+                </li>
+              }
+            </ul>
+          }
+          @if (item.ctaLabel && item.ctaHref) {
+            <a
+              class="btn btn-primary"
+              [href]="item.ctaHref"
+              (click)="onCtaClick($event, item.ctaHref)"
+            >
+              {{ item.ctaLabel }}
+            </a>
+          }
+        </div>
+      </article>
+    }
+  </div>
+</section>

@@ -154,6 +154,30 @@
   margin-top: 2.1rem;
 }
 
+.hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 0 0 1.35rem;
+  padding: 0;
+  list-style: none;
+}
+
+.hero__badges li {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(214, 178, 94, 0.35);
+  background: rgba(214, 178, 94, 0.12);
+  color: #f3e6c0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .hero__text-link {
   font-size: 0.82rem;
   font-weight: 700;

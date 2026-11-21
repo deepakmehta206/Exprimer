@@ -60,6 +60,39 @@ export interface HeroData {
   secondaryCta: string;
   secondaryCtaHref: string;
   imageUrl: string;
+  badges?: string[];
+}
+
+export interface ChecksData {
+  id?: string;
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  groups: Array<{
+    title: string;
+    items: Array<{ title: string; text: string; imageUrl?: string }>;
+  }>;
+}
+
+export interface ShowcaseData {
+  id?: string;
+  items: Array<{
+    eyebrow?: string;
+    title: string;
+    text: string;
+    imageUrl: string;
+    logoUrl?: string;
+    bullets?: string[];
+    ctaLabel?: string;
+    ctaHref?: string;
+    reverse?: boolean;
+  }>;
+}
+
+export interface FaqData {
+  eyebrow: string;
+  title: string;
+  items: Array<{ question: string; answer: string }>;
 }
 
 export interface StatsData {
@@ -136,7 +169,7 @@ export interface HighlightsData {
   eyebrow: string;
   title: string;
   subtitle?: string;
-  items: Array<{ title: string; text: string; accent?: string }>;
+  items: Array<{ title: string; text: string; accent?: string; imageUrl?: string }>;
 }
 
 export interface IndustryMixData {

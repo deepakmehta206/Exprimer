@@ -5,7 +5,7 @@
 .highlights__grid {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
   gap: 1rem;
   isolation: isolate;
 }
@@ -75,6 +75,24 @@
     color-mix(in srgb, var(--accent) 20%, transparent),
     transparent 55%
   );
+}
+
+.highlight-card__media {
+  position: relative;
+  z-index: 1;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-bottom: 1rem;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.highlight-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .highlight-card__index {

@@ -45,5 +45,14 @@
     @case ('resume') {
       <app-resume-section [data]="asResume(section.data)" />
     }
+    @case ('checks') {
+      <app-checks-section [data]="asChecks(section.data)" />
+    }
+    @case ('showcase') {
+      <app-showcase-section [data]="asShowcase(section.data)" />
+    }
+    @case ('faq') {
+      <app-faq-section [data]="asFaq(section.data)" />
+    }
   }
 }

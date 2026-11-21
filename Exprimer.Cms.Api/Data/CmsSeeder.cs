@@ -16,6 +16,7 @@ public static class CmsSeeder
         EnsureSiteSettings(db);
         EnsureMediaPage(db);
         EnsureRecruitmentPage(db);
+        EnsureVerificationPage(db);
 
         if (db.Pages.Any(p => p.Slug == "home"))
         {
@@ -121,24 +122,199 @@ public static class CmsSeeder
             ]
         };
 
-        // Media + recruitment pages managed by Ensure* helpers
-        var verification = ServicePage(
-            "verification",
-            "Background Verification",
-            "Diligence you can put on record.",
-            "AI-based checks for reliable employee verification at scale.",
-            "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=2000&q=80",
-            new[]
-            {
-                "Single & bulk verification",
-                "Identity & employment checks",
-                "Compliance-ready reporting",
-                "Enterprise account workflows"
-            });
-
-        db.Pages.AddRange(home, verification);
+        // Media, recruitment, verification pages managed by Ensure* helpers
+        db.Pages.Add(home);
         db.SaveChanges();
     }
+
+    private static void EnsureVerificationPage(CmsDbContext db)
+    {
+        var existing = db.Pages.Include(p => p.Sections).FirstOrDefault(p => p.Slug == "verification");
+        if (existing is not null)
+        {
+            db.PageSections.RemoveRange(existing.Sections);
+            db.Pages.Remove(existing);
+            db.SaveChanges();
+        }
+
+        db.Pages.Add(BuildVerificationPage());
+        db.SaveChanges();
+    }
+
+    private static Page BuildVerificationPage() => new()
+    {
+        Slug = "verification",
+        Title = "Background Verification | Exprimer",
+        SeoDescription = "Intelligent verification for global teams — paperless, API-first background checks across identity, employment, education, and international compliance.",
+        Sections =
+        [
+            Section("hero", 1, new
+            {
+                brand = "Exprimer",
+                eyebrow = "Global Workforce Platform & Services",
+                headline = "Intelligent Verification for Global Teams.",
+                subheadline = "One stop for all the background checks you need. We combine expert due diligence with automated technology to keep your business secure.",
+                primaryCta = "Book a Free Demo",
+                primaryCtaHref = "/verification#contact",
+                secondaryCta = "See all checks",
+                secondaryCtaHref = "/verification#checks",
+                imageUrl = "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=2000&q=80",
+                badges = new[] { "100% Paperless", "API integration", "HRMS integration" }
+            }),
+            Section("checks", 2, new
+            {
+                id = "checks",
+                eyebrow = "Coverage",
+                title = "All the checks you need in one place",
+                subtitle = "We ensure safety through expert background verification and due diligence, identifying fraud and minimizing risk.",
+                groups = new object[]
+                {
+                    new
+                    {
+                        title = "General Checks",
+                        items = new[]
+                        {
+                            new { title = "Education", text = "Confirms school, college, or university attendance and whether the institution is accredited.", imageUrl = "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Address Check", text = "Verifies current and past residential addresses via documents, utility bills, or field visits.", imageUrl = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Employer Check", text = "Validates employment history for the roles claimed in the candidate’s application.", imageUrl = "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Global Database", text = "Scans compliance and litigation databases for fraud, sanctions, or criminal watchlists.", imageUrl = "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Credit Check", text = "Reviews financial history including loans, defaults, or bankruptcies for integrity risk.", imageUrl = "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Reference", text = "Previous managers and colleagues confirm role, performance, behaviour, and exit reasons.", imageUrl = "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Identity Check", text = "Authenticates Aadhaar, PAN, Passport, or Voter ID to prevent impersonation.", imageUrl = "https://images.unsplash.com/photo-1633265486064-086b219458ec?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Form 16 Check", text = "Confirms salary, tax deductions, and employment continuity via Form 16 records.", imageUrl = "https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "PF Verification", text = "Checks EPFO records for employer contributions and employment periods.", imageUrl = "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Bank Statement", text = "Reviews salary credits to ensure pay details match employment claims.", imageUrl = "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Passport Check", text = "Verifies passport authenticity and travel history for global-role risk flags.", imageUrl = "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=400&q=80" }
+                        }
+                    },
+                    new
+                    {
+                        title = "International Checks",
+                        items = new[]
+                        {
+                            new { title = "International IDs", text = "Verifies foreign passports, national IDs, or work permits for authenticity and work eligibility.", imageUrl = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "OFAC Check", text = "Ensures the candidate is not listed on U.S. Treasury sanctions for terrorism or illicit trade.", imageUrl = "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Database Check", text = "Scans criminal, regulatory, blacklist, and watchlist databases for compliance risk.", imageUrl = "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=400&q=80" },
+                            new { title = "Social Media Check", text = "Reviews public LinkedIn, Facebook, X, and Instagram presence for credibility and red flags.", imageUrl = "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=400&q=80" }
+                        }
+                    }
+                }
+            }),
+            Section("showcase", 3, new
+            {
+                items = new object[]
+                {
+                    new
+                    {
+                        eyebrow = "Integrations",
+                        title = "API Documentation",
+                        text = "Exprimer’s robust API integrates with HRMS, CRM, ERP, and third-party platforms — smoother onboarding, faster verification, uninterrupted workflows.",
+                        imageUrl = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1400&q=80",
+                        logoUrl = "/brand/exprimer-logo.png",
+                        bullets = new[] { "HRMS-ready connectors", "Flexible REST endpoints", "Faster candidate onboarding" },
+                        ctaLabel = "Book a Free Demo",
+                        ctaHref = "/verification#contact",
+                        reverse = false
+                    },
+                    new
+                    {
+                        eyebrow = "Operations",
+                        title = "Live dashboard",
+                        text = "Stay updated on verification progress in real time — with 24×7 support and a dedicated candidate helpline.",
+                        imageUrl = "https://images.unsplash.com/photo-1551281049-9a0b734ef844?auto=format&fit=crop&w=1400&q=80",
+                        logoUrl = "/brand/exprimer-logo.png",
+                        bullets = new[] { "Real-time case status", "24×7 Support", "Candidate Helpline" },
+                        ctaLabel = "Book free Demo",
+                        ctaHref = "/verification#contact",
+                        reverse = true
+                    },
+                    new
+                    {
+                        eyebrow = "Candidate experience",
+                        title = "Candidate Support Center",
+                        text = "End-to-end guided onboarding — verification anytime, anywhere across mobile, laptop, or desktop.",
+                        imageUrl = "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1400&q=80",
+                        logoUrl = "/brand/exprimer-logo.png",
+                        bullets = new[] { "Self-serve FAQs", "Video Tutorials", "Easy-to-use Interface" },
+                        ctaLabel = "Book a Demo",
+                        ctaHref = "/verification#contact",
+                        reverse = false
+                    }
+                }
+            }),
+            Section("trusted", 4, new
+            {
+                eyebrow = "Awards & Recognition",
+                title = "Trusted marks of excellence",
+                items = new[]
+                {
+                    new { name = "Exprimer", logoUrl = "/brand/exprimer-logo.png" },
+                    new { name = "ISO Ready", logoUrl = "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=200&q=80" },
+                    new { name = "Global Desk", logoUrl = "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=200&q=80" },
+                    new { name = "Secure Ops", logoUrl = "https://images.unsplash.com/photo-1563986768494-4dee2763ff36?auto=format&fit=crop&w=200&q=80" },
+                    new { name = "HR Tech", logoUrl = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=200&q=80" },
+                    new { name = "Compliance", logoUrl = "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=200&q=80" },
+                    new { name = "Paperless", logoUrl = "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=200&q=80" },
+                    new { name = "API First", logoUrl = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=200&q=80" }
+                }
+            }),
+            Section("highlights", 5, new
+            {
+                eyebrow = "Trust",
+                title = "Why Global Leaders Trust Us?",
+                subtitle = "Our 100% paperless, API-first architecture transforms background verification from a manual hurdle into a background process.",
+                items = new[]
+                {
+                    new { title = "Global Reach", text = "Coverage across 75+ countries for multi-market hiring.", accent = "trust", imageUrl = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=300&q=80" },
+                    new { title = "Dual-Force Desk", text = "Recruitment & verification for Non-IT positions in one stack.", accent = "talent", imageUrl = "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=300&q=80" },
+                    new { title = "HRMS Integration", text = "Seamless connectors into your existing HR systems.", accent = "media", imageUrl = "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=300&q=80" },
+                    new { title = "API Efficiency", text = "Paperless workflows that cut HR workload and cycle time.", accent = "trust", imageUrl = "/brand/exprimer-logo.png" },
+                    new { title = "Fraud Prevention", text = "Expert diligence that flags impersonation and document risk.", accent = "talent", imageUrl = "https://images.unsplash.com/photo-1633265486064-086b219458ec?auto=format&fit=crop&w=300&q=80" }
+                }
+            }),
+            Section("stats", 6, new
+            {
+                items = new[]
+                {
+                    new { value = "1M+", label = "National Background Checks" },
+                    new { value = "40+", label = "Industries Covered" },
+                    new { value = "5K+", label = "Satisfied Customers" },
+                    new { value = "75+", label = "Countries in network" }
+                }
+            }),
+            Section("faq", 7, new
+            {
+                eyebrow = "BGV",
+                title = "Employee Background Verification — FAQs",
+                items = new[]
+                {
+                    new { question = "What is Employee Background Verification?", answer = "It is the process of verifying a candidate’s identity, education, employment, and legal records to ensure authenticity." },
+                    new { question = "Why is background verification important?", answer = "It helps companies reduce hiring risks, prevent fraud, and maintain workplace trust and compliance." },
+                    new { question = "What checks are included in background verification?", answer = "Checks may include identity, employment, education, address, criminal record, and reference verification." },
+                    new { question = "Is candidate consent required?", answer = "Yes, written or digital consent from the candidate is mandatory before starting any verification." },
+                    new { question = "How long does the verification process take?", answer = "Most checks are completed within 2–15 working days, depending on the scope and geography." },
+                    new { question = "Is the process confidential?", answer = "Yes, all candidate information is handled securely and kept strictly confidential." },
+                    new { question = "Are background checks legally compliant?", answer = "Yes, the process follows applicable data protection and privacy regulations." },
+                    new { question = "Can background checks be customized?", answer = "Yes, employers can choose checks based on role, seniority, and business needs." },
+                    new { question = "What if discrepancies are found?", answer = "Discrepancies are reported clearly, and candidates are given a chance to explain or clarify." },
+                    new { question = "Do you offer international background verification?", answer = "Yes, global background checks are available, subject to country-specific regulations." },
+                    new { question = "Which roles require background verification?", answer = "BGV is recommended for all roles, especially senior, finance, IT, and sensitive positions." },
+                    new { question = "Can BGV be integrated with HRMS or ATS?", answer = "Yes, API-based integration is available for seamless hiring and onboarding." },
+                    new { question = "What documents are required from candidates?", answer = "Common documents include ID proof, address proof, education certificates, and employment records." },
+                    new { question = "How accurate are background verification reports?", answer = "Reports are generated through verified sources with documented evidence for high accuracy." },
+                    new { question = "Can background checks be done for existing employees?", answer = "Yes, companies can conduct checks for current employees during audits or role changes." }
+                }
+            }),
+            Section("cta", 8, new
+            {
+                id = "contact",
+                title = "Contact Sales",
+                subtitle = "Helping businesses build reliable teams with smart hiring and intelligent background verification solutions. Our specialized recruitment agency uses data-driven insights to find elite talent, while our AI-integrated engine clears them in record time.",
+                bullets = new[] { "Non-IT Hiring Expertise", "Paperless Verification", "Reduced HR Workload" },
+                ctaLabel = "Submit"
+            })
+        ]
+    };
 
     private static void EnsureRecruitmentPage(CmsDbContext db)
     {

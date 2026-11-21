@@ -37,6 +37,14 @@
       </p>
     }
 
+    @if (data().badges?.length) {
+      <ul class="hero__badges">
+        @for (badge of data().badges!; track badge) {
+          <li>{{ badge }}</li>
+        }
+      </ul>
+    }
+
     <div class="hero__actions">
       <a
         class="btn btn-primary"

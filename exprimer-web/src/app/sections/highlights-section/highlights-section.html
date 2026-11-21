@@ -12,7 +12,13 @@
     @for (item of data().items; track item.title; let i = $index) {
       <article [attr.class]="'highlight-card highlight-card--' + accentFor(i, item.accent)">
         <span class="highlight-card__rim" aria-hidden="true"></span>
-        <span class="highlight-card__index">{{ (i + 1).toString().padStart(2, '0') }}</span>
+        @if (item.imageUrl) {
+          <div class="highlight-card__media">
+            <img [src]="item.imageUrl" [alt]="''" loading="lazy" />
+          </div>
+        } @else {
+          <span class="highlight-card__index">{{ (i + 1).toString().padStart(2, '0') }}</span>
+        }
         <h3>{{ item.title }}</h3>
         <p>{{ item.text }}</p>
       </article>

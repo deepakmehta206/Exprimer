@@ -1,0 +1,23 @@
+<section class="section faq" #root>
+  <div class="container faq__intro">
+    <p class="eyebrow">{{ data().eyebrow }}</p>
+    <h2 class="section-title">{{ data().title }}</h2>
+  </div>
+
+  <div class="container faq__list">
+    <div class="faq__glow" aria-hidden="true"></div>
+    @for (item of data().items; track item.question; let i = $index) {
+      <article class="faq-item" [class.is-open]="openIndex() === i">
+        <button type="button" class="faq-item__q" (click)="toggle(i)" [attr.aria-expanded]="openIndex() === i">
+          <span>{{ i + 1 }}. {{ item.question }}</span>
+          <i aria-hidden="true"></i>
+        </button>
+        @if (openIndex() === i) {
+          <div class="faq-item__a">
+            <p>{{ item.answer }}</p>
+          </div>
+        }
+      </article>
+    }
+  </div>
+</section>
