@@ -52,6 +52,18 @@
             <span class="resume-file__name">{{ fileName() || 'PDF, DOC, or DOCX · max 5 MB' }}</span>
           </div>
         </label>
+
+        <label
+          class="resume-consent"
+          [class.is-invalid]="form.controls.consentAccepted.touched && form.controls.consentAccepted.invalid"
+        >
+          <input type="checkbox" formControlName="consentAccepted" />
+          <span>
+            I consent to Exprimer collecting and processing my personal data and resume for recruitment
+            and related services under applicable Indian laws (including the Digital Personal Data
+            Protection Act, 2023). I understand I may withdraw consent by contacting Exprimer.
+          </span>
+        </label>
       </div>
 
       @if (error()) {

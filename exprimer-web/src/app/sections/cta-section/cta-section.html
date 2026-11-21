@@ -63,6 +63,15 @@
           <span>Message</span>
           <textarea formControlName="message" rows="4" placeholder="Tell us what you need…"></textarea>
         </label>
+
+        <label class="cta-consent" [class.is-invalid]="form.controls.consentAccepted.touched && form.controls.consentAccepted.invalid">
+          <input type="checkbox" formControlName="consentAccepted" />
+          <span>
+            I consent to Exprimer collecting and processing my personal data for enquiry, recruitment,
+            and/or verification purposes under applicable Indian laws (including the Digital Personal
+            Data Protection Act, 2023). I understand I may withdraw consent by contacting Exprimer.
+          </span>
+        </label>
       </div>
 
       @if (error()) {

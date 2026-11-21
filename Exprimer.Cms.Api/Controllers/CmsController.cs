@@ -124,6 +124,12 @@ public class CmsController(CmsDbContext db) : ControllerBase
             return BadRequest(new { message = "Name and email are required." });
         }
 
+        if (!request.ConsentAccepted)
+        {
+            return BadRequest(new { message = "Consent is required to process personal data." });
+        }
+
+        var now = DateTime.UtcNow;
         var lead = new LeadEnquiry
         {
             Name = request.Name.Trim(),
@@ -131,7 +137,10 @@ public class CmsController(CmsDbContext db) : ControllerBase
             Phone = request.Phone?.Trim() ?? string.Empty,
             Company = request.Company?.Trim() ?? string.Empty,
             Interest = request.Interest?.Trim() ?? string.Empty,
-            Message = request.Message?.Trim() ?? string.Empty
+            Message = request.Message?.Trim() ?? string.Empty,
+            ConsentAccepted = true,
+            ConsentAtUtc = now,
+            CreatedAtUtc = now
         };
 
         db.LeadEnquiries.Add(lead);
@@ -156,11 +165,17 @@ public class CmsController(CmsDbContext db) : ControllerBase
         [FromForm] string? phone,
         [FromForm] string? role,
         [FromForm] string? message,
+        [FromForm] bool consentAccepted,
         IFormFile? resume)
     {
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email))
         {
             return BadRequest(new { message = "Name and email are required." });
+        }
+
+        if (!consentAccepted)
+        {
+            return BadRequest(new { message = "Consent is required to process personal data." });
         }
 
         if (resume is null || resume.Length == 0)
@@ -191,6 +206,7 @@ public class CmsController(CmsDbContext db) : ControllerBase
             await resume.CopyToAsync(stream);
         }
 
+        var now = DateTime.UtcNow;
         var submission = new ResumeSubmission
         {
             Name = name.Trim(),
@@ -201,7 +217,10 @@ public class CmsController(CmsDbContext db) : ControllerBase
             OriginalFileName = Path.GetFileName(resume.FileName),
             StoredFileName = storedName,
             ContentType = resume.ContentType ?? "application/octet-stream",
-            FileSizeBytes = resume.Length
+            FileSizeBytes = resume.Length,
+            ConsentAccepted = true,
+            ConsentAtUtc = now,
+            CreatedAtUtc = now
         };
 
         db.ResumeSubmissions.Add(submission);

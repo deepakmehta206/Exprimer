@@ -27,6 +27,7 @@ export class CmsService {
     body.append('phone', payload.phone);
     body.append('role', payload.role);
     body.append('message', payload.message);
+    body.append('consentAccepted', String(payload.consentAccepted));
     body.append('resume', payload.resume, payload.resume.name);
     return this.http.post<{ id: number; message: string }>(`${this.apiUrl}/resumes`, body);
   }

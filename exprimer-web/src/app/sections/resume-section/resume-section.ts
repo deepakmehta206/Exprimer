@@ -32,6 +32,7 @@ export class ResumeSection implements AfterViewInit, OnDestroy {
     phone: [''],
     role: [''],
     message: [''],
+    consentAccepted: [false, Validators.requiredTrue],
   });
 
   ngAfterViewInit(): void {
@@ -90,14 +91,19 @@ export class ResumeSection implements AfterViewInit, OnDestroy {
     const values = this.form.getRawValue();
     this.cms
       .submitResume({
-        ...values,
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        role: values.role,
+        message: values.message,
+        consentAccepted: values.consentAccepted,
         resume: this.resumeFile,
       })
       .subscribe({
         next: () => {
           this.success.set(true);
           this.submitting.set(false);
-          this.form.reset();
+          this.form.reset({ consentAccepted: false });
           this.resumeFile = null;
           this.fileName.set('');
         },

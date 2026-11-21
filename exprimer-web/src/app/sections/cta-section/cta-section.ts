@@ -1,5 +1,16 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, inject, input, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CtaData } from '../../core/models/cms.models';
@@ -7,6 +18,13 @@ import { CmsService } from '../../core/services/cms.service';
 import { GlassSelect, GlassSelectOption } from '../../shared/glass-select/glass-select';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const INTEREST_BY_SLUG: Record<string, string> = {
+  media: 'Media Distribution',
+  recruitment: 'Recruitment',
+  verification: 'Background Verification',
+  home: 'Media Distribution',
+};
 
 @Component({
   selector: 'app-cta-section',
@@ -18,6 +36,7 @@ export class CtaSection implements AfterViewInit, OnDestroy {
   readonly data = input.required<CtaData>();
   private readonly fb = inject(FormBuilder);
   private readonly cms = inject(CmsService);
+  private readonly route = inject(ActivatedRoute);
   @ViewChild('root', { static: true }) root!: ElementRef<HTMLElement>;
   private ctx?: gsap.Context;
 
@@ -38,7 +57,19 @@ export class CtaSection implements AfterViewInit, OnDestroy {
     company: [''],
     interest: ['Media Distribution'],
     message: [''],
+    consentAccepted: [false, Validators.requiredTrue],
   });
+
+  constructor() {
+    effect(() => {
+      // Re-apply when CMS payload arrives / page slug context is ready
+      void this.data();
+      const next = this.resolveDefaultInterest();
+      if (this.form.controls.interest.value !== next) {
+        this.form.controls.interest.setValue(next);
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     const el = this.root.nativeElement;
@@ -74,12 +105,30 @@ export class CtaSection implements AfterViewInit, OnDestroy {
       next: () => {
         this.success.set(true);
         this.submitting.set(false);
-        this.form.reset({ interest: 'Media Distribution' });
+        this.form.reset({
+          interest: this.resolveDefaultInterest(),
+          consentAccepted: false,
+        });
       },
-      error: () => {
-        this.error.set('Could not send enquiry. Please try again.');
+      error: (err) => {
+        const msg = err?.error?.message as string | undefined;
+        this.error.set(msg || 'Could not send enquiry. Please try again.');
         this.submitting.set(false);
       },
     });
+  }
+
+  private resolveDefaultInterest(): string {
+    try {
+      const fromCms = this.data().defaultInterest?.trim();
+      if (fromCms && this.interestOptions.some((o) => o.value === fromCms)) {
+        return fromCms;
+      }
+    } catch {
+      // input not bound yet
+    }
+
+    const slug = (this.route.snapshot.paramMap.get('slug') || 'home').toLowerCase();
+    return INTEREST_BY_SLUG[slug] || 'Media Distribution';
   }
 }

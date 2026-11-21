@@ -32,6 +32,7 @@ export interface LeadEnquiry {
   company: string;
   interest: string;
   message: string;
+  consentAccepted: boolean;
 }
 
 export interface ResumeData {
@@ -47,6 +48,7 @@ export interface ResumeSubmissionPayload {
   phone: string;
   role: string;
   message: string;
+  consentAccepted: boolean;
   resume: File;
 }
 
@@ -127,6 +129,8 @@ export interface CtaData {
   subtitle: string;
   bullets: string[];
   ctaLabel: string;
+  /** Prefills Live intake interest; falls back to route slug mapping when omitted. */
+  defaultInterest?: string;
 }
 
 export interface OfficesData {

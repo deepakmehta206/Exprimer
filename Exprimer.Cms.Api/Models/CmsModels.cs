@@ -44,6 +44,8 @@ public class LeadEnquiry
     public string Company { get; set; } = string.Empty;
     public string Interest { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
+    public bool ConsentAccepted { get; set; }
+    public DateTime? ConsentAtUtc { get; set; }
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
 }
 
@@ -55,6 +57,7 @@ public class LeadEnquiryRequest
     public string Company { get; set; } = string.Empty;
     public string Interest { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
+    public bool ConsentAccepted { get; set; }
 }
 
 public class ResumeSubmission
@@ -69,6 +72,8 @@ public class ResumeSubmission
     public string StoredFileName { get; set; } = string.Empty;
     public string ContentType { get; set; } = string.Empty;
     public long FileSizeBytes { get; set; }
+    public bool ConsentAccepted { get; set; }
+    public DateTime? ConsentAtUtc { get; set; }
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
 }
 
