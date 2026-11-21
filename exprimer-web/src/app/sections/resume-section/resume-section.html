@@ -1,0 +1,72 @@
+<section class="section resume" [attr.id]="data().id || 'resume'" #root>
+  <div class="container resume__layout">
+    <div class="resume__glow" aria-hidden="true"></div>
+
+    <article class="resume-card resume-card--copy">
+      <span class="resume-card__rim" aria-hidden="true"></span>
+      <div class="resume-card__top">
+        <span class="resume-pill">Careers</span>
+        <span class="resume-card__index">CV</span>
+      </div>
+      <div class="resume-card__body">
+        <h2 class="section-title">{{ data().title }}</h2>
+        <p class="section-subtitle">{{ data().subtitle }}</p>
+      </div>
+    </article>
+
+    <form class="resume-card resume-card--form" [formGroup]="form" (ngSubmit)="submit()">
+      <span class="resume-card__rim" aria-hidden="true"></span>
+      <div class="resume-card__top">
+        <span class="resume-pill resume-pill--live"><i></i> Open roles</span>
+        <span class="resume-card__index">02</span>
+      </div>
+
+      @if (success()) {
+        <p class="resume__success">Resume received — our talent desk will review it shortly.</p>
+      }
+
+      <div class="resume-fields">
+        <label class="resume-field">
+          <span>Name</span>
+          <input formControlName="name" autocomplete="name" placeholder="Your name" />
+        </label>
+        <label class="resume-field">
+          <span>Email</span>
+          <input formControlName="email" type="email" autocomplete="email" placeholder="you@email.com" />
+        </label>
+        <label class="resume-field">
+          <span>Phone</span>
+          <input formControlName="phone" autocomplete="tel" placeholder="+91 …" />
+        </label>
+        <label class="resume-field">
+          <span>Role interest</span>
+          <input formControlName="role" placeholder="e.g. Plant Manager" />
+        </label>
+        <label class="resume-field resume-field--full">
+          <span>Message</span>
+          <textarea formControlName="message" rows="3" placeholder="Brief note (optional)"></textarea>
+        </label>
+        <label class="resume-field resume-field--full resume-field--file">
+          <span>Resume</span>
+          <div class="resume-file">
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              (change)="onFileChange($event)"
+            />
+            <span class="resume-file__btn">Choose file</span>
+            <span class="resume-file__name">{{ fileName() || 'PDF, DOC, or DOCX · max 5 MB' }}</span>
+          </div>
+        </label>
+      </div>
+
+      @if (error()) {
+        <p class="resume__error">{{ error() }}</p>
+      }
+
+      <button class="resume-submit" type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Uploading…' : data().ctaLabel || 'Submit your Resume' }}
+      </button>
+    </form>
+  </div>
+</section>

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Exprimer.Cms.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+13ee5ee25bb3cc6d6aed8d8a98987f044d630ba1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+983735c53cd05f848c931b62cd329bdebe19b568")]
 [assembly: System.Reflection.AssemblyProductAttribute("Exprimer.Cms.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Exprimer.Cms.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

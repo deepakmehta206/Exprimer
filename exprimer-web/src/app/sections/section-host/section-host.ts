@@ -10,6 +10,7 @@ import {
   OfficesData,
   PageSection,
   ProcessData,
+  ResumeData,
   RolesData,
   ServicesData,
   StatsData,
@@ -25,6 +26,7 @@ import { HighlightsSection } from '../highlights-section/highlights-section';
 import { IndustryMixSection } from '../industry-mix-section/industry-mix-section';
 import { OfficesSection } from '../offices-section/offices-section';
 import { ProcessSection } from '../process-section/process-section';
+import { ResumeSection } from '../resume-section/resume-section';
 import { RolesSection } from '../roles-section/roles-section';
 import { ServicesSection } from '../services-section/services-section';
 import { StatsSection } from '../stats-section/stats-section';
@@ -48,6 +50,7 @@ import { TrustedSection } from '../trusted-section/trusted-section';
     IndustryMixSection,
     TestimonialsSection,
     RolesSection,
+    ResumeSection,
   ],
   templateUrl: './section-host.html',
 })
@@ -108,5 +111,9 @@ export class SectionHost {
 
   asRoles(data: Record<string, unknown>): RolesData {
     return data as unknown as RolesData;
+  }
+
+  asResume(data: Record<string, unknown>): ResumeData {
+    return data as unknown as ResumeData;
   }
 }

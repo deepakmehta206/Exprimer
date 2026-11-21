@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CmsPage, LeadEnquiry, SiteSettings } from '../models/cms.models';
+import { CmsPage, LeadEnquiry, ResumeSubmissionPayload, SiteSettings } from '../models/cms.models';
 
 @Injectable({ providedIn: 'root' })
 export class CmsService {
@@ -18,5 +18,16 @@ export class CmsService {
 
   submitLead(payload: LeadEnquiry): Observable<{ id: number; message: string }> {
     return this.http.post<{ id: number; message: string }>(`${this.apiUrl}/leads`, payload);
+  }
+
+  submitResume(payload: ResumeSubmissionPayload): Observable<{ id: number; message: string }> {
+    const body = new FormData();
+    body.append('name', payload.name);
+    body.append('email', payload.email);
+    body.append('phone', payload.phone);
+    body.append('role', payload.role);
+    body.append('message', payload.message);
+    body.append('resume', payload.resume, payload.resume.name);
+    return this.http.post<{ id: number; message: string }>(`${this.apiUrl}/resumes`, body);
   }
 }

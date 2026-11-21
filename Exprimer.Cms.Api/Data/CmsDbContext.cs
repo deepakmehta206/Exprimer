@@ -9,6 +9,7 @@ public class CmsDbContext(DbContextOptions<CmsDbContext> options) : DbContext(op
     public DbSet<Page> Pages => Set<Page>();
     public DbSet<PageSection> PageSections => Set<PageSection>();
     public DbSet<LeadEnquiry> LeadEnquiries => Set<LeadEnquiry>();
+    public DbSet<ResumeSubmission> ResumeSubmissions => Set<ResumeSubmission>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

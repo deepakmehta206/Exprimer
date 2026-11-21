@@ -57,6 +57,21 @@ public class LeadEnquiryRequest
     public string Message { get; set; } = string.Empty;
 }
 
+public class ResumeSubmission
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Phone { get; set; } = string.Empty;
+    public string Role { get; set; } = string.Empty;
+    public string Message { get; set; } = string.Empty;
+    public string OriginalFileName { get; set; } = string.Empty;
+    public string StoredFileName { get; set; } = string.Empty;
+    public string ContentType { get; set; } = string.Empty;
+    public long FileSizeBytes { get; set; }
+    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+}
+
 public class PageSectionDto
 {
     public int Id { get; set; }

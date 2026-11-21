@@ -252,13 +252,20 @@ public static class CmsSeeder
                     new { label = "Full Stack Engineer" }
                 }
             }),
-            Section("cta", 8, new
+            Section("resume", 8, new
+            {
+                id = "resume",
+                title = "We specialize in Non-IT hiring and offer Recruitment Solutions, Outsourcing & Staffing, along with AI tools that help companies optimize tasks and hire faster.",
+                subtitle = "Fill out the form below to explore the world of opportunities.",
+                ctaLabel = "Submit your Resume"
+            }),
+            Section("cta", 9, new
             {
                 id = "contact",
-                title = "Build reliable teams with smart hiring",
-                subtitle = "Tell us your open roles — we respond within a day with a clear hiring plan.",
-                bullets = new[] { "Non-IT hiring expertise", "Mid-to-C level search", "AI-assisted screening" },
-                ctaLabel = "Book a free demo"
+                title = "Contact Sales",
+                subtitle = "Helping businesses build reliable teams with smart hiring and intelligent background verification solutions. Our specialized recruitment agency uses data-driven insights to find elite talent, while our AI-integrated engine clears them in record time.",
+                bullets = new[] { "Non-IT Hiring Expertise", "Paperless Verification", "Reduced HR Workload" },
+                ctaLabel = "Submit"
             })
         ]
     };

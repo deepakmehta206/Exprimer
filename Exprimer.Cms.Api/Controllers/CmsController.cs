@@ -147,4 +147,90 @@ public class CmsController(CmsDbContext db) : ControllerBase
             .ToListAsync();
         return Ok(leads);
     }
+
+    [HttpPost("resumes")]
+    [RequestSizeLimit(6 * 1024 * 1024)]
+    public async Task<IActionResult> CreateResume(
+        [FromForm] string name,
+        [FromForm] string email,
+        [FromForm] string? phone,
+        [FromForm] string? role,
+        [FromForm] string? message,
+        IFormFile? resume)
+    {
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email))
+        {
+            return BadRequest(new { message = "Name and email are required." });
+        }
+
+        if (resume is null || resume.Length == 0)
+        {
+            return BadRequest(new { message = "Resume file is required." });
+        }
+
+        const long maxBytes = 5 * 1024 * 1024;
+        if (resume.Length > maxBytes)
+        {
+            return BadRequest(new { message = "Resume must be 5 MB or smaller." });
+        }
+
+        var extension = Path.GetExtension(resume.FileName).ToLowerInvariant();
+        var allowed = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".pdf", ".doc", ".docx" };
+        if (!allowed.Contains(extension))
+        {
+            return BadRequest(new { message = "Only PDF, DOC, or DOCX resumes are accepted." });
+        }
+
+        var uploads = Path.Combine(Directory.GetCurrentDirectory(), "uploads", "resumes");
+        Directory.CreateDirectory(uploads);
+        var storedName = $"{Guid.NewGuid():N}{extension}";
+        var path = Path.Combine(uploads, storedName);
+
+        await using (var stream = System.IO.File.Create(path))
+        {
+            await resume.CopyToAsync(stream);
+        }
+
+        var submission = new ResumeSubmission
+        {
+            Name = name.Trim(),
+            Email = email.Trim(),
+            Phone = phone?.Trim() ?? string.Empty,
+            Role = role?.Trim() ?? string.Empty,
+            Message = message?.Trim() ?? string.Empty,
+            OriginalFileName = Path.GetFileName(resume.FileName),
+            StoredFileName = storedName,
+            ContentType = resume.ContentType ?? "application/octet-stream",
+            FileSizeBytes = resume.Length
+        };
+
+        db.ResumeSubmissions.Add(submission);
+        await db.SaveChangesAsync();
+
+        return CreatedAtAction(
+            nameof(ListResumes),
+            new { id = submission.Id },
+            new { submission.Id, message = "Resume received." });
+    }
+
+    [HttpGet("resumes")]
+    public async Task<ActionResult<IEnumerable<object>>> ListResumes()
+    {
+        var items = await db.ResumeSubmissions.AsNoTracking()
+            .OrderByDescending(r => r.CreatedAtUtc)
+            .Select(r => new
+            {
+                r.Id,
+                r.Name,
+                r.Email,
+                r.Phone,
+                r.Role,
+                r.Message,
+                r.OriginalFileName,
+                r.FileSizeBytes,
+                r.CreatedAtUtc
+            })
+            .ToListAsync();
+        return Ok(items);
+    }
 }

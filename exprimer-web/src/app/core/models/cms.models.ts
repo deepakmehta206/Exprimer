@@ -34,6 +34,22 @@ export interface LeadEnquiry {
   message: string;
 }
 
+export interface ResumeData {
+  id?: string;
+  title: string;
+  subtitle: string;
+  ctaLabel?: string;
+}
+
+export interface ResumeSubmissionPayload {
+  name: string;
+  email: string;
+  phone: string;
+  role: string;
+  message: string;
+  resume: File;
+}
+
 export interface HeroData {
   brand: string;
   eyebrow: string;
